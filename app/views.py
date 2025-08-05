@@ -353,6 +353,8 @@ def extract_text_from_image(image_file):
 
     try:
         result_json = response.json()
+        print(result_json)
+        print(response.text)
         return result_json["ParsedResults"][0]["ParsedText"]
     except (KeyError, IndexError):
         return ""
