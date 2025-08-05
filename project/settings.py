@@ -144,10 +144,7 @@ STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
 
 
 
-INSTALLED_APPS += [
-    'cloudinary',
-    'cloudinary_storage',
-]
+
 
 # Use Cloudinary for media file storage
 DEFAULT_FILE_STORAGE = 'cloudinary_storage.storage.MediaCloudinaryStorage'
