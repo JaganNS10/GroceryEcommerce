@@ -151,13 +151,13 @@ DEFAULT_FILE_STORAGE = 'cloudinary_storage.storage.MediaCloudinaryStorage'
 
 # Cloudinary configuration using environment variables
 CLOUDINARY_STORAGE = {
-    'CLOUD_NAME': os.getenv('CLOUDINARY_CLOUD_NAME'),
-    'API_KEY': os.getenv('CLOUDINARY_API_KEY'),
-    'API_SECRET': os.getenv('CLOUDINARY_API_SECRET'),
+    'CLOUD_NAME': "dyzbqhn4x",
+    'API_KEY': "138459462238155",
+    'API_SECRET': "bF9HoKDJSKHjRIVl8bCrq2vLGLM",
 }
 
 # (Optional but recommended)
-CLOUDINARY_URL = os.getenv('CLOUDINARY_URL')
+CLOUDINARY_URL = "cloudinary://138459462238155:bF9HoKDJSKHjRIVl8bCrq2vLGLM@dyzbqhn4x"
 
 # Media URL is optional because Cloudinary provides its own URLs
 MEDIA_URL = '/media/'
