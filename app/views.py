@@ -384,7 +384,7 @@ def Online_Payment(request):
 
 
                 extracted_text = extract_text_from_image(data)
-
+                print(extracted_text)
 
                 if (
                     "Completed" in extracted_text and
