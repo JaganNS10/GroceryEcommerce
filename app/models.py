@@ -5,7 +5,7 @@ from django.conf import settings
 # models.py
 class usermodel(AbstractUser):
     address = models.TextField(default='Enter the correct address')
-    phone = models.CharField(max_length=1, default='9756897634')
+    phone = models.CharField(max_length=10, default='9756897634')
 
 
     def __str__(self):
