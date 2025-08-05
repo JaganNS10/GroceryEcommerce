@@ -141,7 +141,7 @@ def ViewCart(request):
     total = get_price[1]
     link = '/rooturl/profile/'
    
-    return render(request,'cart.html',{"Cart":Cart,"count":List[0],"price":price[0],"total":total,"name":"profile","link":link,"Name":"Orders","logo":"briefcase-outline","Link":"/rooturl/orders/"})
+    return render(request,'Cart.html',{"Cart":Cart,"count":List[0],"price":price[0],"total":total,"name":"profile","link":link,"Name":"Orders","logo":"briefcase-outline","Link":"/rooturl/orders/"})
 
 @login_required(login_url='Login')
 def filter(request):
