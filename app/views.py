@@ -21,6 +21,7 @@ import os
 
 
 def Home(request):
+    
     if request.user.is_authenticated:
         GetCart = CartDetails(request)
         List = GetCart[1]
@@ -311,7 +312,7 @@ def Online_Payment(request):
 
 
     if request.method == "POST":
-        form = OnlinePayment(request.POST,files=request.FILES)
+        form = OnlinePayment(request.POST,request.FILES)
         if form.is_valid():
             data = request.FILES['recipt']
             save_image = PaymentImage.objects.create(image=data)
