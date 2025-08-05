@@ -1,5 +1,6 @@
 from django.db import models
 from django.contrib.auth.models import User
+from django.conf import settings
 
 class usermodel(User):
     address = models.TextField(default='Enter the correct address')
@@ -43,14 +44,14 @@ class Products(models.Model):
 
 
 class UserPurchase(models.Model):
-    user = models.ForeignKey(User,on_delete=models.CASCADE)
+    user = models.ForeignKey(settings.AUTH_USER_MODEL,on_delete=models.CASCADE)
     product = models.ForeignKey(Products,on_delete=models.CASCADE)
 
     def __str__(self):
         return f"{self.user.username} {self.product.product_details} {self.product.product_details}"
 
 class Buckets(models.Model):
-    user = models.ForeignKey(User,on_delete=models.CASCADE)
+    user = models.ForeignKey(settings.AUTH_USER_MODEL,on_delete=models.CASCADE)
     product = models.ForeignKey(Products,on_delete=models.CASCADE)
     cart = models.PositiveIntegerField()
 
