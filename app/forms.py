@@ -55,7 +55,7 @@ class PasswordFields(forms.Form):
 
 
 
-class OnlinePayment(forms.Form):
+class OnlinePaymentform(forms.Form):
 
     recipt=forms.ImageField()
 

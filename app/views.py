@@ -1,4 +1,4 @@
-from .forms import RegisterUser,AddProducts,Edit,Change_Password,PasswordFields,OnlinePayment
+from .forms import RegisterUser,AddProducts,Edit,Change_Password,PasswordFields,OnlinePaymentform
 from .models import Products,usermodel,Buckets,UserPurchase,PaymentImage
 
 
@@ -220,7 +220,8 @@ def Cash(request):
     number_list = ["+91 7904136090"]
     client = Client(account_sid,auth_token)
     get = usermodel.objects.get(id=request.user.id)
-    details = f"Name: {get.first_name} {get.last_login}\n Phone No: {get.phone}\nAddress: {get.address}\nOtp:  {otp}\nOrderId:  {order_id}\nProducts: {",".join(product)}\nPrice: {price[1]}\nPayment: {pay[0]}"
+    request.session['payment'] = ['cash on delivery']
+    details = f"Name: {get.first_name} {get.last_login}\n Phone No: {get.phone}\nAddress: {get.address}\nOtp:  {otp}\nOrderId:  {order_id}\nProducts: {",".join(product)}\nPrice: {price[1]}\nPayment: {request.session['payment']}"
     for r in number_list:
         msg = client.messages.create(
             body= f"{details}",
@@ -305,14 +306,14 @@ def Online_Payment(request):
     date = datetime.date.today()
     month = {1:"Jan",2:"Feb",3:"Mar",4:"Apr",5:"May",6:"Jun",7:"Jul",8:"Aug",9:"Sep",10:"Oct",11:"Nov",12:"Dec"}
     day = str(date.day)
-    month = month[date.month]
+    monthmap = month[date.month]
     year = str(date.year)
-    print(day,month,year)
+    print(day,monthmap,year)
 
 
 
     if request.method == "POST":
-        form = OnlinePayment(request.POST,request.FILES)
+        form = OnlinePaymentform(request.POST,request.FILES)
         if form.is_valid():
             data = request.FILES['recipt']
             save_image = PaymentImage.objects.create(image=data)
@@ -321,16 +322,16 @@ def Online_Payment(request):
             gpay_id = "Google Pay + jagan1Ons@oksbi"
             change_image_text = pytesseract.image_to_string(open_image)
             # print(change_image_text,total)
-            if ("Completed" in change_image_text) and (str(int(total)) in change_image_text) and (day in change_image_text and month in change_image_text and year in change_image_text) and ("To: JOTHILAKSHMI S" in change_image_text):
+            if ("Completed" in change_image_text) and (str(int(total)) in change_image_text) and (day in change_image_text and monthmap in change_image_text and year in change_image_text) and ("To: JOTHILAKSHMI S" in change_image_text):
                 print(True)
-                pay[0] = ['Online Payment']
+                request.session['payment'] = 'Online Payment'
                 return redirect('Cash')
             else:
                 save_image.image.delete()
                 save_image.delete()
                 messages.error(request,'Oops! You are uploaded Wrong recipt!')
-            
-    form = OnlinePayment()
+    else:
+        form = OnlinePaymentform()
     return render(request,'Online.html',{"form":form,"count":List[0],"name":"Profile","link":link,"Name":"Orders","logo":"briefcase-outline"}) 
 
 def Price(Cart):
