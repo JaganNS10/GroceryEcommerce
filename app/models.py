@@ -44,14 +44,14 @@ class Products(models.Model):
 
 
 class UserPurchase(models.Model):
-    user = models.ForeignKey(settings.AUTH_USER_MODEL,on_delete=models.CASCADE)
+    user = models.ForeignKey(usermodel,on_delete=models.CASCADE)
     product = models.ForeignKey(Products,on_delete=models.CASCADE)
 
     def __str__(self):
         return f"{self.user.username} {self.product.product_details} {self.product.product_details}"
 
 class Buckets(models.Model):
-    user = models.ForeignKey(settings.AUTH_USER_MODEL,on_delete=models.CASCADE)
+    user = models.ForeignKey(usermodel,on_delete=models.CASCADE)
     product = models.ForeignKey(Products,on_delete=models.CASCADE)
     cart = models.PositiveIntegerField()
 
