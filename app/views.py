@@ -296,7 +296,6 @@ def password(request):
     return render(request,'password.html',{"form":form})
 
 
-@login_required(login_url='Login')
 # def Online_Payment(request):
 #     GetCart = CartDetails(request)
 #     List = GetCart[1]
@@ -358,7 +357,7 @@ def extract_text_from_image(image_file):
     except (KeyError, IndexError):
         return ""
 
-    
+@login_required(login_url='Login') 
 def Online_Payment(request):
     try:
         GetCart = CartDetails(request)
