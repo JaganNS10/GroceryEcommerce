@@ -183,6 +183,7 @@ def confirm_cash(request):
     GetCart = CartDetails(request)
     List = GetCart[1]
     link = '/rooturl/profile/'
+    request.session['payment'] = ['cash on delivery']
     return render(request,'cash.html',{"count":List[0],"name":"profile","link":link,"Name":"Orders","logo":"briefcase-outline","Link":"/rooturl/orders/"})
 
 
@@ -221,7 +222,7 @@ def Cash(request):
     number_list = ["+91 7904136090"]
     client = Client(account_sid,auth_token)
     get = usermodel.objects.get(id=request.user.id)
-    request.session['payment'] = ['cash on delivery']
+    
     details = f"Name: {get.first_name} {get.last_login}\n Phone No: {get.phone}\nAddress: {get.address}\nOtp:  {otp}\nOrderId:  {order_id}\nProducts: {",".join(product)}\nPrice: {price[1]}\nPayment: {request.session['payment']}"
     for r in number_list:
         msg = client.messages.create(
@@ -368,15 +369,7 @@ def extract_text_from_image(image_file):
     except (KeyError, IndexError):
         return ""
 
-import re
 
-def extract_amount_from_text(text):
-    # This regex finds patterns like ₹220, Rs. 220, Rs220, ₹ 220.50 etc.
-    pattern = r'(?:₹|Rs\.?)\s?(\d+(?:\.\d{1,2})?)'
-    match = re.search(pattern, text, re.IGNORECASE)
-    if match:
-        return match.group(1)
-    return "Amount not found"
 
 
 @login_required(login_url='Login') 
@@ -406,8 +399,6 @@ def Online_Payment(request):
 
 
                 extracted_text = extract_text_from_image(data)
-                amount = extract_amount_from_text(extracted_text)
-                print(amount)
                 print(extracted_text)
                 if (
                     "Completed" in extracted_text and
