@@ -296,43 +296,110 @@ def password(request):
 
 
 @login_required(login_url='Login')
+# def Online_Payment(request):
+#     GetCart = CartDetails(request)
+#     List = GetCart[1]
+#     link = '/rooturl/profile/'
+#     GetPrice = Price(GetCart[0])
+#     total = GetPrice[1]
+
+#     date = datetime.date.today()
+#     month = {1:"Jan",2:"Feb",3:"Mar",4:"Apr",5:"May",6:"Jun",7:"Jul",8:"Aug",9:"Sep",10:"Oct",11:"Nov",12:"Dec"}
+#     day = str(date.day)
+#     monthmap = month[date.month]
+#     year = str(date.year)
+#     print(day,monthmap,year)
+
+
+
+#     if request.method == "POST":
+#         form = OnlinePaymentform(request.POST,request.FILES)
+#         if form.is_valid():
+#             data = request.FILES['recipt']
+#             save_image = PaymentImage.objects.create(image=data)
+#             image = save_image.image.file
+#             open_image = Image.open(data)
+#             gpay_id = "Google Pay + jagan1Ons@oksbi"
+#             change_image_text = pytesseract.image_to_string(open_image)
+#             # print(change_image_text,total)
+#             if ("Completed" in change_image_text) and (str(int(total)) in change_image_text) and (day in change_image_text and monthmap in change_image_text and year in change_image_text) and ("To: JOTHILAKSHMI S" in change_image_text):
+#                 print(True)
+#                 request.session['payment'] = 'Online Payment'
+#                 return redirect('Cash')
+#             else:
+#                 save_image.image.delete()
+#                 save_image.delete()
+#                 messages.error(request,'Oops! You are uploaded Wrong recipt!')
+#     else:
+#         form = OnlinePaymentform()
+#     return render(request,'Online.html',{"form":form,"count":List[0],"name":"Profile","link":link,"Name":"Orders","logo":"briefcase-outline"}) 
+
+
 def Online_Payment(request):
-    GetCart = CartDetails(request)
-    List = GetCart[1]
-    link = '/rooturl/profile/'
-    GetPrice = Price(GetCart[0])
-    total = GetPrice[1]
+    try:
+        GetCart = CartDetails(request)
+        List = GetCart[1]
+        link = '/rooturl/profile/'
+        GetPrice = Price(GetCart[0])
+        total = GetPrice[1]
 
-    date = datetime.date.today()
-    month = {1:"Jan",2:"Feb",3:"Mar",4:"Apr",5:"May",6:"Jun",7:"Jul",8:"Aug",9:"Sep",10:"Oct",11:"Nov",12:"Dec"}
-    day = str(date.day)
-    monthmap = month[date.month]
-    year = str(date.year)
-    print(day,monthmap,year)
+        date = datetime.date.today()
+        month = {1:"Jan",2:"Feb",3:"Mar",4:"Apr",5:"May",6:"Jun",7:"Jul",8:"Aug",9:"Sep",10:"Oct",11:"Nov",12:"Dec"}
+        day = str(date.day)
+        monthmap = month[date.month]
+        year = str(date.year)
 
+        if request.method == "POST":
+            form = OnlinePaymentform(request.POST, request.FILES)
+            if form.is_valid():
+                if 'recipt' not in request.FILES:
+                    messages.error(request, "Receipt not uploaded!")
+                    return redirect(request.path)
+                
+                data = request.FILES['recipt']
+                save_image = PaymentImage.objects.create(image=data)
 
+                try:
+                    open_image = Image.open(data)  # directly use uploaded image
+                    change_image_text = pytesseract.image_to_string(open_image)
+                except Exception as e:
+                    print("OCR error:", e)
+                    save_image.delete()
+                    messages.error(request, "Unable to read the receipt image.")
+                    return redirect(request.path)
 
-    if request.method == "POST":
-        form = OnlinePaymentform(request.POST,request.FILES)
-        if form.is_valid():
-            data = request.FILES['recipt']
-            save_image = PaymentImage.objects.create(image=data)
-            image = save_image.image.path
-            open_image = Image.open(image)
-            gpay_id = "Google Pay + jagan1Ons@oksbi"
-            change_image_text = pytesseract.image_to_string(open_image)
-            # print(change_image_text,total)
-            if ("Completed" in change_image_text) and (str(int(total)) in change_image_text) and (day in change_image_text and monthmap in change_image_text and year in change_image_text) and ("To: JOTHILAKSHMI S" in change_image_text):
-                print(True)
-                request.session['payment'] = 'Online Payment'
-                return redirect('Cash')
-            else:
-                save_image.image.delete()
-                save_image.delete()
-                messages.error(request,'Oops! You are uploaded Wrong recipt!')
-    else:
-        form = OnlinePaymentform()
-    return render(request,'Online.html',{"form":form,"count":List[0],"name":"Profile","link":link,"Name":"Orders","logo":"briefcase-outline"}) 
+                if (
+                    "Completed" in change_image_text and
+                    str(int(total)) in change_image_text and
+                    day in change_image_text and
+                    monthmap in change_image_text and
+                    year in change_image_text and
+                    "To: JOTHILAKSHMI S" in change_image_text
+                ):
+                    request.session['payment'] = 'Online Payment'
+                    return redirect('Cash')
+                else:
+                    save_image.image.delete()
+                    save_image.delete()
+                    messages.error(request, 'Oops! You uploaded the wrong receipt!')
+        else:
+            form = OnlinePaymentform()
+
+        return render(request, 'Online.html', {
+            "form": form,
+            "count": List[0],
+            "name": "Profile",
+            "link": link,
+            "Name": "Orders",
+            "logo": "briefcase-outline"
+        })
+
+    except Exception as e:
+        import traceback
+        print("Error in Online_Payment:", e)
+        traceback.print_exc()
+        return render(request, 'error.html', {"message": "Something went wrong in Online Payment."})
+
 
 def Price(Cart):
     price = [1]
