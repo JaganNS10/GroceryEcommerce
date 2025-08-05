@@ -26,12 +26,7 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 
 # SECURITY WARNING: keep the secret key used in production secret!
 
-# SECRET_KEY = 'django-insecure-3x&yn=$exqx@&1^j3+rdk20df%2iot%2)ezaifomobz@_d-4sh'
 
-# SECURITY WARNING: don't run with debug turned on in production!
-# DEBUG = True
-
-# ALLOWED_HOSTS = []
 
 DEBUG = config('DEBUG', default=False, cast=bool)
 SECRET_KEY = config('SECRET_KEY')
@@ -52,6 +47,7 @@ INSTALLED_APPS = [
     'crispy_bootstrap4',
     'cloudinary',
     'cloudinary_storage',
+    'django.contrib.staticfiles',
 ]
 
 
@@ -166,16 +162,7 @@ MEDIA_URL = '/media/'
 
 
 
-# Cloudinary credentials (get from https://cloudinary.com/console)
 
-
-CLOUDINARY_STORAGE = {
-    'CLOUD_NAME': os.getenv("CLOUDINARY_CLOUD_NAME"),
-    'API_KEY': os.getenv("CLOUDINARY_API_KEY"),
-    'API_SECRET': os.getenv("CLOUDINARY_API_SECRET"),
-}
-
-DEFAULT_FILE_STORAGE = 'cloudinary_storage.storage.MediaCloudinaryStorage'
 
 
 
