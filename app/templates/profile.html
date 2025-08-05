@@ -1,0 +1,35 @@
+{% extends 'index.html' %}
+
+{% block content %}
+<style>
+    h5{
+        border: 1px solid black;
+        border-style: dotted;
+        padding: 20px 10px;
+    }
+    a{
+        padding:10px 0;
+        color: #2874f0;
+        font-size:small;
+    }
+</style>
+<div class="container" style="margin-top:25px;">
+    <h5 class="showcase-title">
+        UserName: {{user.username}}
+    </h5>
+    <h5 class="showcase-title">
+        Name: {{user.first_name}} {{user.last_name}}
+    </h5>
+    <h5 class="showcase-title">
+        Address: {{user.address}} 
+    </h5>
+    <h5 class="showcase-title">
+        Phone Number: {{user.phone}}
+    </h5>
+
+    <a href="{% url 'changepassword' %}">
+        change password! :)
+    </a>
+</div>
+{% endblock %}
+

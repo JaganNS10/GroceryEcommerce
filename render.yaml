@@ -1,0 +1,22 @@
+services:
+  - type: web
+    name: grocery-ecommerce
+    env: python
+    buildCommand: "./build.sh"
+    startCommand: "gunicorn project.wsgi:application"
+    envVars:
+      - key: DEBUG
+        value: false
+      - key: SECRET_KEY
+        value: ${SECRET_KEY}
+      - key: DATABASE_URL
+        fromDatabase:
+          name: project-db
+          property: connectionString
+      - key: TWILIO_ACCOUNT_SID
+        value: ${TWILIO_ACCOUNT_SID}
+      - key: TWILIO_AUTH_TOKEN
+        value: ${TWILIO_AUTH_TOKEN}
+
+databases:
+  - name: project-db

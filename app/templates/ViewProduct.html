@@ -1,0 +1,97 @@
+{% extends 'index.html' %}
+{% load static %}
+
+
+{% block content %}
+<div class="product-featured">
+    <div class="showcase-wrapper has-scrollbar">
+        <div class="showcase-container">
+              
+                <div class="showcase">
+              
+                  <div class="showcase-banner">
+                    <img src="{{data.image.url}}" alt="" class="showcase-img">
+                  </div>
+              
+                  <div class="showcase-content">
+              
+                    <div class="showcase-rating">
+                      <ion-icon name="star"></ion-icon>
+                      <ion-icon name="star"></ion-icon>
+                      <ion-icon name="star"></ion-icon>
+                      <ion-icon name="star-outline"></ion-icon>
+                      <ion-icon name="star-outline"></ion-icon>
+                    </div>
+                    <h3 class="showcase-title">
+                      <a href="#" class="showcase-title">{{data.product_name}}</a>
+                    </h3>
+              
+                    <p class="showcase-desc">
+                        {{data.product_details}}
+                    </p>
+              
+                    <div class="price-box">
+                      <p class="price">₹{{data.price}}</p>
+                      <del>₹{{del}}</del>
+                    </div>
+                    <div style="display:flex;">
+
+                        <a class="add-cart-btn" style="margin-right: 10px;"  href="/rooturl/addCart/{{data.id}}">
+                            add to cart
+                        </a>
+                        <a href="/rooturl/addCart/{{data.id}}">
+                          <button class="add-cart-btn">Buy now</button>
+                        </a>
+
+                        <!-- <button>-</button>
+                        <button></button> -->
+                    </div>
+                    <div class="showcase-status">
+                      <div class="wrapper">
+                        <p> already sold: <b>15</b> </p>
+              
+                        <p> available: <b>40</b> </p>
+                      </div>
+              
+                      <div class="showcase-status-bar"></div>
+                    </div>
+              
+                    <div class="countdown-box">
+              
+                      <p class="countdown-desc">Hurry Up! Offer ends in:</p>
+              
+                      <div class="countdown">
+                        <div class="countdown-content">
+                          <p class="display-number">360</p>
+                          <p class="display-text">Days</p>
+                        </div>
+              
+                        <div class="countdown-content">
+                          <p class="display-number">24</p>
+                          <p class="display-text">Hours</p>
+                        </div>
+              
+                        <div class="countdown-content">
+                          <p class="display-number">59</p>
+                          <p class="display-text">Min</p>
+                        </div>
+              
+                        <div class="countdown-content">
+                          <p class="display-number">00</p>
+                          <p class="display-text">Sec</p>
+                        </div>
+                      </div>
+              
+                    </div>
+              
+                  </div>
+              
+                </div> 
+        </div>
+    </div>
+</div>
+
+{% endblock %}
+
+
+

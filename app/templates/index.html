@@ -1,0 +1,3563 @@
+{% load static %}
+{% load crispy_forms_tags %}
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Grocery -eCommerce Website</title>
+
+  <!--
+    - favicon
+  -->
+  <link rel="shortcut icon" href="{% static 'assets/images/logo/favicon.ico' %}" type="image/x-icon">
+
+  <!--
+    - custom css link
+  -->
+  <link rel="stylesheet" href="{% static 'assets/css/style.css'%}">
+
+  {% block css %}
+  {% endblock %}
+  <!--
+    - google font link
+  -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800;900&display=swap"
+    rel="stylesheet">
+
+</head>
+
+
+<body>
+
+  {% if messages %}
+    {% for i in messages %}
+      <span style="font-size:medium;font-weight: bold;color:cadetblue;text-align:center;">
+        {{i}}
+      </span>
+    {% endfor %}
+  {% endif %}
+
+  <div class="overlay" data-overlay></div>
+
+
+  <!--
+    - MODAL
+  -->
+
+  <!-- <div class="modal" data-modal>
+    <button class="modal-close-btn" data-modal-close>
+      <ion-icon name="close-outline"></ion-icon>
+    </button>
+
+    <div class="modal-close-overlay" data-modal-overlay></div> 
+
+    <div class="modal-content">
+
+
+      <div class="newsletter-img">
+        <img src=" {% static 'assets/images/newsletter.png' %}" alt="subscribe newsletter" width="400" height="400">
+      </div>
+
+      <div class="newsletter">
+
+        <form action="#">
+
+          <div class="newsletter-header">
+
+            <h3 class="newsletter-title">Subscribe Newsletter.</h3>
+
+            <p class="newsletter-desc">
+              Subscribe the <b>Grocery-Shop</b> to get latest products and discount update.
+            </p>
+
+          </div>
+
+          <input type="email" name="email" class="email-field" placeholder="Email Address" required>
+
+          <button type="submit" class="btn-newsletter">Subscribe</button>
+
+        </form>
+
+      </div>
+
+    </div>  
+
+  </div> -->
+
+  <div data-modal>
+    <button data-modal-close>
+
+    </button>
+    <div data-modal-overlay></div> 
+  </div>
+
+
+
+
+
+  <!--
+    - NOTIFICATION TOAST
+  -->
+
+  <div class="notification-toast" data-toast>
+    <button class="toast-close-btn" data-toast-close>
+      <ion-icon name="close-outline"></ion-icon>
+    </button>
+
+    <div class="toast-detail">
+
+      <p class="toast-message">
+        Grocery Shop
+      </p>
+
+      <p class="toast-title">
+        Welcome to Grocery-Shop -:)
+      </p>
+
+      <p class="toast-meta">
+        <time datetime="PT2M">2 Minutes</time> ago
+      </p>
+
+    </div>
+  </div>
+
+  <!--
+    - HEADER
+  -->
+
+  <header>
+
+
+
+    <div class="header-main">
+        <div class="container">
+
+        <a href="{% url 'Home' %}" class="header-logo">
+          <h1 style="color: black;">Grocery Shop</h1>
+        </a>
+
+        <div class="header-search-container">
+          <form action="{% url 'filter' %}" method="post">
+            {% csrf_token %}
+            <input type="search" name="search" class="search-field" placeholder="Enter your product name...">
+
+            <button class="search-btn">
+              <ion-icon name="search-outline"></ion-icon>
+            </button>
+          </form>
+        </div>
+
+        <div class="header-user-actions">
+
+          <a href="{{link}}">
+              <button class="action-btn">
+                <ion-icon name="person-outline"></ion-icon>
+                <span class="count">{{name}}</span>
+              </button>
+          </a>
+
+          <a href="/rooturl/ViewCart/">
+            <button  class="action-btn">
+              <ion-icon name="heart-outline"></ion-icon>
+              <span class="count">{{count}}</span>
+            </button>
+          </a>
+
+          <a href="{{Link}}">
+            <button  class="action-btn">
+              <ion-icon name="{{logo}}"></ion-icon>
+              <span class="count">{{Name}}</span>
+            </button>
+          </a>
+
+          <a href="{% url 'Logout' %}">
+            <button  class="action-btn">
+              <ion-icon name="person-remove-outline"></ion-icon>
+              <span class="count">Logout</span>
+            </button>
+          </a>
+
+        </div>
+
+      </div>
+    </div>
+
+    <nav class="desktop-navigation-menu">
+
+      <div class="container">
+
+        <ul class="desktop-menu-category-list">
+
+          <li class="menu-category">
+            <a href="{% url 'Home' %}" class="menu-title">Home</a>
+          </li>
+
+          <li class="menu-category">
+            <a href="#" class="menu-title">Categories</a>
+
+            <div class="dropdown-panel">
+
+              <ul class="dropdown-panel-list">
+
+                <li class="menu-title">
+                  <a href="#">Fresh Produce</a>
+                </li>
+
+                <li class="panel-list-item">
+                  <a href="/rooturl/GetProduct/Fruits/">Fruits</a>
+                </li>
+
+                <li class="panel-list-item">
+                  <a href="/rooturl/GetProduct/Vegetables/">Vegetables</a>
+                </li>
+
+                <li class="panel-list-item">
+                  <a href="/rooturl/GetProduct/Herbs & Leafy Greens/">Herbs & Leafy Greens</a>
+                </li>
+
+                <li class="panel-list-item">
+                  <a href="/rooturl/GetProduct/Organic Produce/">Organic Produce</a>
+                </li>
+
+                <li class="panel-list-item">
+                  <a href="#">
+                    <img src="{% static '/assets/images/fruits.webp' %}" alt="fruits" width="250"
+                      height="119">
+                  </a>
+                </li>
+
+              </ul>
+
+              <ul class="dropdown-panel-list">
+
+                <li class="menu-title">
+                  <a href="#">Bakery & Dairy</a>
+                </li>
+
+                <li class="panel-list-item">
+                  <a href="/rooturl/GetProduct/Milk/">Milk</a>
+                </li>
+                <li class="panel-list-item">
+                  <a href="/rooturl/GetProduct/Curd/">Curd</a>
+                </li>
+                <li class="panel-list-item">
+                  <a href="/rooturl/GetProduct/Paneer/">Paneer</a>
+                </li>
+
+                <li class="panel-list-item">
+                  <a href="/rooturl/GetProduct/Cheese/">Cheese & Butter</a>
+                </li>
+
+                <li class="panel-list-item">
+                  <a href="/rooturl/GetProduct/Bread/">Bread, Buns, Rolls</a>
+                </li>
+
+                <li class="panel-list-item">
+                  <a href="/rooturl/GetProduct/Pastries&Cakes/">Pastries&Cakes</a>
+                </li>
+
+                <li class="panel-list-item">
+                  <a href="#">
+                    <img src="{% static '/assets/images/dairy&bakery.webp' %}" alt="dairy&bakery" width="250" height="110">
+                  </a>
+                </li>
+
+              </ul>
+
+              <ul class="dropdown-panel-list">
+
+                <li class="menu-title">
+                  <a href="#">Staples & Packaged Foods</a>
+                </li>
+
+                <li class="panel-list-item">
+                  <a href="/rooturl/GetProduct/Atta/">Rice, Wheat, Atta</a>
+                </li>
+
+                <li class="panel-list-item">
+                  <a href="/rooturl/GetProduct/Dal/">Pulses, Dal</a>
+                </li>
+
+                <li class="panel-list-item">
+                  <a href="/rooturl/GetProduct/Ghee/">Oil & Ghee</a>
+                </li>
+
+                <li class="panel-list-item">
+                  <a href="/rooturl/GetProduct/Sugar/">Salt, Sugar, Jaggery</a>
+                </li>
+
+
+                <li class="panel-list-item">
+                  <a href="#">
+                    <img src="{% static '/assets/images/staples.webp' %}" alt="staples" width="250" height="110">
+                  </a>
+                </li>
+
+              </ul>
+
+              <ul class="dropdown-panel-list">
+
+                <li class="menu-title">
+                  <a href="#">Snacks & Beverages</a>
+                </li>
+
+                <li class="panel-list-item">
+                  <a href="/rooturl/GetProduct/Namkeen/">Chips, Namkeen, Popcorn</a>
+                </li>
+
+                <li class="panel-list-item">
+                  <a href="/rooturl/GetProduct/Biscuits/">Biscuits & Cookies</a>
+                </li>
+
+                <li class="panel-list-item">
+                  <a href="/rooturl/GetProduct/Chocolates/">Chocolates</a>
+                </li>
+
+                <li class="panel-list-item">
+                  <a href="/rooturl/GetProduct/Juices/">Soft Drinks, Juices</a>
+                </li>
+
+                <li class="panel-list-item">
+                  <a href="#">
+                    <img src="{% static '/assets/images/Snacks&Beverages1.jpg' %}" alt="Snacks&Beverages" width="250" height="110">
+                  </a>
+                </li>
+
+              </ul>
+
+            </div>
+          </li>
+
+          <li class="menu-category">
+            <a href="#" class="menu-title">Household Care</a>
+
+            <ul class="dropdown-list">
+
+              <li class="dropdown-item">
+                <a href="/rooturl/GetProduct/Soaps/">Soaps</a>
+              </li>
+              <li class="dropdown-item">
+                <a href="/rooturl/GetProduct/Shampoo/">Shampoo</a>
+              </li>
+              <li class="dropdown-item">
+                <a href="/rooturl/GetProduct/Toothpaste/">Toothpaste</a>
+              </li>
+
+              <li class="dropdown-item">
+                <a href="/rooturl/GetProduct/Dishwash Liquids/">Dishwash Liquids</a>
+              </li>
+
+              <li class="dropdown-item">
+                <a href="/rooturl/GetProduct/Floor Cleaner/">Floor Cleaner</a>
+              </li>
+
+              <li class="dropdown-item">
+                <a href="/rooturl/GetProduct/Handwash/">Handwash</a>
+              </li>
+
+            </ul>
+          </li>
+
+          <li class="menu-category">
+            <a href="#" class="menu-title">Baby Care</a>
+
+            <ul class="dropdown-list">
+
+              <li class="dropdown-item">
+                <a href="/rooturl/GetProduct/Baby Food/">Baby Food</a>
+              </li>
+
+              <li class="dropdown-item">
+                <a href="/rooturl/GetProduct/Diapers/">Diapers & Wipes</a>
+              </li>
+
+              <li class="dropdown-item">
+                <a href="/rooturl/GetProduct/Baby Soap/">Baby Soap & Shampoo</a>
+              </li>
+
+              <li class="dropdown-item">
+                <a href="/rooturl/GetProduct/Baby Lotion/">Baby Lotion & Cream</a>
+              </li>
+
+            </ul>
+          </li>
+
+          <li class="menu-category">
+            <a href="#" class="menu-title">Dry Fruits & Nuts</a>
+
+            <ul class="dropdown-list">
+
+              <li class="dropdown-item">
+                <a href="/rooturl/GetProduct/Almonds/">Almonds</a>
+              </li>
+
+              <li class="dropdown-item">
+                <a href="/rooturl/GetProduct/Cashews/">Cashews</a>
+              </li>
+
+              <li class="dropdown-item">
+                <a href="/rooturl/GetProduct/Dates/">Dates</a>
+              </li>
+
+              <li class="dropdown-item">
+                <a href="/rooturl/GetProduct/Walnuts/">Walnuts</a>
+              </li>
+
+            </ul>
+          </li>
+
+          <li class="menu-category">
+            <a href="#" class="menu-title">Perfume</a>
+
+            <ul class="dropdown-list">
+
+              <li class="dropdown-item">
+                <a href="/rooturl/GetProduct/Clothes Perfume/">Clothes Perfume</a>
+              </li>
+
+              <li class="dropdown-item">
+                <a href="/rooturl/GetProduct/Deodorant/">Deodorant</a>
+              </li>
+
+              <li class="dropdown-item">
+                <a href="/rooturl/GetProduct/Flower Fragrance/">Flower Fragrance</a>
+              </li>
+
+              <li class="dropdown-item">
+                <a href="/rooturl/GetProduct/Air Freshener/">Air Freshener</a>
+              </li>
+
+            </ul>
+          </li>
+          <li class="menu-category">
+            <a href="#" class="menu-title">Masala & Spices</a>
+
+            <ul class="dropdown-list">
+
+              <li class="dropdown-item">
+                <a href="/rooturl/GetProduct/Turmeric/">Turmeric</a>
+              </li>
+
+              <li class="dropdown-item">
+                <a href="/rooturl/GetProduct/Chilli Powder/">Chilli Powder</a>
+              </li>
+
+              <li class="dropdown-item">
+                <a href="/rooturl/GetProduct/Garam Masala/">Garam Masala</a>
+              </li>
+
+              <li class="dropdown-item">
+                <a href="/rooturl/GetProduct/Coriander Powder/">Coriander Powder</a>
+              </li>
+
+            </ul>
+          </li>
+
+          <li class="menu-category">
+            <a href="#" class="menu-title">Hot Offers</a>
+          </li>
+
+        </ul>
+      </div>
+    </nav>
+
+    <div class="mobile-bottom-navigation">
+
+      
+      <button class="action-btn" data-mobile-menu-open-btn>
+          <ion-icon name="menu-outline"></ion-icon>
+      </button>
+
+
+      <a href="{{link}}">
+        <button class="action-btn">
+              <ion-icon name="person-outline"></ion-icon>
+              <span class="count">{{name}}</span>
+        </button>
+      </a>
+
+      <a href="/rooturl/ViewCart/">
+        <button  class="action-btn">
+              <ion-icon name="heart-outline"></ion-icon>
+              <span class="count">{{count}}</span>
+         </button>
+      </a>
+      <a href="/rooturl/Home/">
+        <button class="action-btn">
+          <ion-icon name="home-outline"></ion-icon>
+        </button>
+      </a>
+      <a href="{{ Link }}">
+            <button  class="action-btn">
+              <ion-icon name="{{logo}}"></ion-icon>
+              <span class="count">{{Name}}</span>
+            </button>
+       </a>
+
+      <a href="/rooturl/Logout/">
+            <button  class="action-btn">
+              <ion-icon name="person-remove-outline"></ion-icon>
+              <span class="count">Logout</span>
+            </button>
+       </a>
+
+       
+      <button class="action-btn" data-mobile-menu-open-btn>
+          <ion-icon name="grid-outline"></ion-icon>
+      </button>
+       
+
+    </div>
+
+    <nav class="mobile-navigation-menu  has-scrollbar" data-mobile-menu>
+
+      <div class="menu-top">
+        <h2 class="menu-title">Menu</h2>
+
+        <button class="menu-close-btn" data-mobile-menu-close-btn>
+          <ion-icon name="close-outline"></ion-icon>
+        </button>
+      </div>
+
+      <ul class="mobile-menu-category-list">
+
+        <li class="menu-category">
+          <a href="#" class="menu-title">Home</a>
+        </li>
+
+        <li class="menu-category">
+
+          <button class="accordion-menu" data-accordion-btn>
+            <p class="menu-title">Categories</p>
+
+            <div>
+              <ion-icon name="add-outline" class="add-icon"></ion-icon>
+              <ion-icon name="remove-outline" class="remove-icon"></ion-icon>
+            </div>
+          </button>
+
+          <ul class="submenu-category-list" data-accordion>
+
+            <li class="submenu-category">
+              <a href="#" class="submenu-title">Fresh Produce</a>
+            </li>
+
+            <li class="submenu-category">
+              <a href="/rooturl/GetProduct/Fruits/" class="submenu-title">Fruits</a>
+            </li>
+
+            <li class="submenu-category">
+              <a href="/rooturl/GetProduct/Vegetables/" class="submenu-title">Vegetables</a>
+            </li>
+
+            <li class="submenu-category">
+              <a href="/rooturl/GetProduct/Leafy Greens/" class="submenu-title">Herbs & Leafy Greens</a>
+            </li>
+
+          </ul>
+
+        </li>
+
+        <li class="menu-category">
+
+          <button class="accordion-menu" data-accordion-btn>
+            <p class="menu-title">Household Care</p>
+
+            <div>
+              <ion-icon name="add-outline" class="add-icon"></ion-icon>
+              <ion-icon name="remove-outline" class="remove-icon"></ion-icon>
+            </div>
+          </button>
+
+          <ul class="submenu-category-list" data-accordion>
+
+            <li class="submenu-category">
+              <a href="/rooturl/GetProduct/Soaps/" class="submenu-title">Soaps</a>
+            </li>
+
+            <li class="submenu-category">
+              <a href="/rooturl/GetProduct/Shampoo/" class="submenu-title">Shampoo</a>
+            </li>
+
+            <li class="submenu-category">
+              <a href="/rooturl/GetProduct/Dishwash Liquids/" class="submenu-title">Dishwash Liquids</a>
+            </li>
+            <li class="submenu-category">
+              <a href="/rooturl/GetProduct/Toothpaste/" class="submenu-title">Toothpaste</a>
+            </li>
+             <li class="submenu-category">
+              <a href="/rooturl/GetProduct/Floor Cleaner/" class="submenu-title">Floor Cleaner</a>
+            </li>
+            <li class="submenu-category">
+              <a href="/rooturl/GetProduct/Handwash/" class="submenu-title">Handwash</a>
+            </li>
+
+          </ul>
+
+        </li>
+
+        <li class="menu-category">
+
+          <button class="accordion-menu" data-accordion-btn>
+            <p class="menu-title">Dry Fruits & Nuts</p>
+
+            <div>
+              <ion-icon name="add-outline" class="add-icon"></ion-icon>
+              <ion-icon name="remove-outline" class="remove-icon"></ion-icon>
+            </div>
+          </button>
+
+          <ul class="submenu-category-list" data-accordion>
+
+            <li class="submenu-category">
+              <a href="/rooturl/GetProduct/Almonds/" class="submenu-title">Almonds</a>
+            </li>
+
+            <li class="submenu-category">
+              <a href="/rooturl/GetProduct/Cashews/" class="submenu-title">Cashews</a>
+            </li>
+
+            <li class="submenu-category">
+              <a href="/rooturl/GetProduct/Dates/" class="submenu-title">Dates</a>
+            </li>
+
+            <li class="submenu-category">
+              <a href="/rooturl/GetProduct/Walnuts/" class="submenu-title">Walnuts</a>
+            </li>
+
+          </ul>
+
+        </li>
+
+        <li class="menu-category">
+
+          <button class="accordion-menu" data-accordion-btn>
+            <p class="menu-title">Masala & Spices</p>
+
+            <div>
+              <ion-icon name="add-outline" class="add-icon"></ion-icon>
+              <ion-icon name="remove-outline" class="remove-icon"></ion-icon>
+            </div>
+          </button>
+
+          <ul class="submenu-category-list" data-accordion>
+
+            <li class="submenu-category">
+              <a href="/rooturl/GetProduct/Turmeric/" class="submenu-title">Turmeric</a>
+            </li>
+
+            <li class="submenu-category">
+              <a href="/rooturl/GetProduct/Chilli Powder/" class="submenu-title">Chilli Powder</a>
+            </li>
+
+            <li class="submenu-category">
+              <a href="/rooturl/GetProduct/Garam Masala/" class="submenu-title">Garam Masala</a>
+            </li>
+
+            <li class="submenu-category">
+              <a href="/rooturl/GetProduct/Coriander Powder/" class="submenu-title">Coriander Powder</a>
+            </li>
+
+          </ul>
+
+        </li>
+
+        <li class="menu-category">
+
+          <button class="accordion-menu" data-accordion-btn>
+            <p class="menu-title">Perfume</p>
+
+            <div>
+              <ion-icon name="add-outline" class="add-icon"></ion-icon>
+              <ion-icon name="remove-outline" class="remove-icon"></ion-icon>
+            </div>
+          </button>
+
+          <ul class="submenu-category-list" data-accordion>
+
+            <li class="submenu-category">
+              <a href="/rooturl/GetProduct/Clothes Perfume/" class="submenu-title">Clothes Perfume</a>
+            </li>
+
+            <li class="submenu-category">
+              <a href="/rooturl/GetProduct/Deodorant/" class="submenu-title">Deodorant</a>
+            </li>
+
+            <li class="submenu-category">
+              <a href="/rooturl/GetProduct/Flower Fragrance/" class="submenu-title">Flower Fragrance</a>
+            </li>
+
+            <li class="submenu-category">
+              <a href="/rooturl/GetProduct/Air Freshener/" class="submenu-title">Air Freshener</a>
+            </li>
+
+          </ul>
+
+        </li>
+
+        <li class="menu-category">
+          <a href="#" class="menu-title">Blog</a>
+        </li>
+
+        <li class="menu-category">
+          <a href="#" class="menu-title">Hot Offers</a>
+        </li>
+
+      </ul>
+
+
+      <div class="menu-bottom">
+
+        <ul class="menu-category-list">
+
+          <li class="menu-category">
+
+            <button class="accordion-menu" data-accordion-btn>
+              <p class="menu-title">Language</p>
+
+              <ion-icon name="caret-back-outline" class="caret-back"></ion-icon>
+            </button>
+
+            <ul class="submenu-category-list" data-accordion>
+
+              <li class="submenu-category">
+                <a href="#" class="submenu-title">English</a>
+              </li>
+
+              <li class="submenu-category">
+                <a href="#" class="submenu-title">Tamil</a>
+              </li>
+
+            </ul>
+
+          </li>
+
+        </ul>
+
+        <ul class="menu-social-container">
+
+          <li>
+            <a href="#" class="social-link">
+              <ion-icon name="logo-facebook"></ion-icon>
+            </a>
+          </li>
+
+          <li>
+            <a href="#" class="social-link">
+              <ion-icon name="logo-twitter"></ion-icon>
+            </a>
+          </li>
+
+          <li>
+            <a href="#" class="social-link">
+              <ion-icon name="logo-instagram"></ion-icon>
+            </a>
+          </li>
+        </ul>
+
+      </div>
+
+    </nav>
+
+  </header>
+
+
+
+
+
+  <!--
+    - MAIN
+  -->
+  {% block content %}
+  <main>
+
+    <!--
+      - BANNER
+    -->
+
+    <div class="banner">
+       <div class="container">
+
+        <div class="slider-container has-scrollbar">
+
+          <div class="slider-item">
+
+            <img src="{% static '/assets/images/offer2.png' %}" alt="product" class="banner-img">
+      
+
+          </div>
+          <div class="slider-item">
+
+            <img src="{% static '/assets/images/offer1.jpg' %}" alt="product" class="banner-img">
+           
+
+            <!-- <div class="banner-content">
+              
+              <a href="#" class="banner-btn">Shop now</a>
+
+            </div> -->
+
+          </div>
+
+          <div class="slider-item">
+
+            <img src="{% static '/assets/images/offer3.png' %}" alt="product" class="banner-img">
+
+
+          </div>
+        </div>
+
+      </div>
+    </div>
+
+
+
+
+
+    <!--
+      - CATEGORY
+    -->
+
+    <div class="category">
+
+      <div class="container">
+
+        <div class="category-item-container has-scrollbar">
+
+          <div class="category-item">
+
+            <div class="category-img-box">
+              <img src="{% static '/assets/images/icons/icon1.jpg' %}" alt="">
+            </div>
+
+            <div class="category-content-box">
+
+              <div class="category-content-flex">
+                <h3 class="category-item-title">Tata</h3>
+
+                <p class="category-item-amount">(53)</p>
+              </div>
+
+              <a href="#" class="category-btn">Show all</a>
+
+            </div>
+
+          </div>
+
+          <div class="category-item">
+
+            <div class="category-img-box">
+              <img src="{% static '/assets/images/icons/icon2.jpg' %}" alt="" width="30">
+            </div>
+
+            <div class="category-content-box">
+
+              <div class="category-content-flex">
+                <h3 class="category-item-title">sunfeast</h3>
+
+                <p class="category-item-amount">(58)</p>
+              </div>
+
+              <a href="#" class="category-btn">Show all</a>
+
+            </div>
+
+          </div>
+
+          <div class="category-item">
+
+            <div class="category-img-box">
+              <img src="{% static '/assets/images/icons/icon3.jpg' %}" alt="" width="30">
+            </div>
+           
+            <div class="category-content-box">
+
+              <div class="category-content-flex">
+                <h3 class="category-item-title">Happila</h3>
+
+                <p class="category-item-amount">(68)</p>
+              </div>
+
+              <a href="#" class="category-btn">Show all</a>
+
+            </div>
+
+          </div>
+
+          <div class="category-item">
+
+            <div class="category-img-box">
+              <img src="{% static '/assets/images/icons/icon4.jpg' %}" alt="" width="30">
+            </div>
+
+            <div class="category-content-box">
+
+              <div class="category-content-flex">
+                <h3 class="category-item-title">Farmely</h3>
+
+                <p class="category-item-amount">(84)</p>
+              </div>
+
+              <a href="#" class="category-btn">Show all</a>
+
+            </div>
+
+          </div>
+
+          <div class="category-item">
+
+            <div class="category-img-box">
+              <img src="  {% static '/assets/images/icons/icon5.jpg' %} " alt="" width="30">
+            </div>
+
+            <div class="category-content-box">
+
+              <div class="category-content-flex">
+                <h3 class="category-item-title">Myfitness</h3>
+
+                <p class="category-item-amount">(35)</p>
+              </div>
+
+              <a href="#" class="category-btn">Show all</a>
+
+            </div>
+
+          </div>
+
+          <div class="category-item">
+
+            <div class="category-img-box">
+              <img src=" {% static '/assets/images/icons/icon6.jpg' %} " alt="" width="30">
+            </div>
+
+            <div class="category-content-box">
+
+              <div class="category-content-flex">
+                <h3 class="category-item-title">Dabur</h3>
+
+                <p class="category-item-amount">(16)</p>
+              </div>
+
+              <a href="#" class="category-btn">Show all</a>
+
+            </div>
+
+          </div>
+
+          <div class="category-item">
+
+            <div class="category-img-box"> 
+              <img src=" {% static '/assets/images/icons/icon7.png' %} " alt="" width="30">
+            </div>
+
+            <div class="category-content-box">
+
+              <div class="category-content-flex">
+                <h3 class="category-item-title">Maggie</h3>
+
+                <p class="category-item-amount">(27)</p>
+              </div>
+
+              <a href="#" class="category-btn">Show all</a>
+
+            </div>
+
+          </div>
+
+          <div class="category-item">
+
+            <div class="category-img-box"> 
+              <img src=" {% static '/assets/images/icons/icon8.jpg' %}  " alt="" width="30">
+            </div>
+
+            <div class="category-content-box">
+
+              <div class="category-content-flex">
+                <h3 class="category-item-title">Cadbury</h3>
+
+                <p class="category-item-amount">(39)</p>
+              </div>
+
+              <a href="#" class="category-btn">Show all</a>
+
+            </div>
+
+          </div>
+
+        </div>
+
+      </div>
+
+    </div>
+
+
+
+
+
+    <!--
+      - PRODUCT
+    -->
+
+    <div class="product-container">
+
+      <div class="container">
+
+
+        <!--
+          - SIDEBAR
+        -->
+
+        <div class="sidebar  has-scrollbar" data-mobile-menu>
+
+          <div class="sidebar-category">
+
+            <div class="sidebar-top">
+              <h2 class="sidebar-title">Category</h2>
+
+              <button class="sidebar-close-btn" data-mobile-menu-close-btn>
+                <ion-icon name="close-outline"></ion-icon>
+              </button>
+            </div>
+
+            <ul class="sidebar-menu-category-list">
+
+              <li class="sidebar-menu-category" onclick="sidebar(this,0)">
+
+                <button class="sidebar-accordion-menu" data-accordion-btn>
+
+                  <div class="menu-title-flex">
+                    <img src="{% static '/assets/images/icons/everyday.png' %} " alt="" width="20" height="20"
+                      class="menu-title-img">
+                    <p class="menu-title">Everyday Groceries</p>
+                  </div>
+
+                  <div>
+                    <ion-icon name="add-outline" class="add-icon"></ion-icon>
+                    <ion-icon name="remove-outline" class="remove-icon"></ion-icon>
+                  </div>
+
+                </button>
+                
+                <ul class="displayblock">
+                  <li>
+                    <a href="/rooturl/GetProduct/Ghee/" style="color: black;">
+                      Ghee
+                    </a>
+                  </li>
+                  <li>
+                    <a href="/rooturl/GetProduct/Atta/" style="color: black;">
+                      Atta (Wheat Flour)
+                    </a>
+                  </li>
+                  <li>
+                    <a href="/rooturl/GetProduct/Rice/" style="color: black;">
+                      Rice
+                    </a>        
+                  </li>
+                  <li>
+                    <a href="/rooturl/GetProduct/Dal/" style="color: black;">
+                      Dal
+                    </a>
+                  </li>
+                  <li>
+                    <a href="/rooturl/GetProduct/Sugar/" style="color: black;">
+                      Sugar
+                    </a>
+                  </li>
+                </ul>
+              </li>
+
+              <li class="sidebar-menu-category" onclick="sidebar(this,1)">
+
+                <button class="sidebar-accordion-menu" data-accordion-btn>
+                  <div class="menu-title-flex">
+                    <img src="{% static '/assets/images/icons/snacks.png' %} " alt="" class="menu-title-img" width="20"
+                      height="20">
+
+                    <p class="menu-title">Snacks</p>
+                  </div>
+
+                  <div>
+                    <ion-icon name="add-outline" class="add-icon"></ion-icon>
+                    <ion-icon name="remove-outline" class="remove-icon"></ion-icon>
+                  </div>
+
+                </button>
+
+                <ul class="displayblock">
+                  <li>
+                    <a href="/rooturl/GetProduct/Biscuits/" style="color: black;">
+                       Biscuits
+                    </a>
+                  </li>
+                  <li>
+                    <a href="/rooturl/GetProduct/Cold Drinks/" style="color: black;">
+                      Cold Drinks
+                    </a>
+                  </li>
+                  <li>
+                     <a href="/rooturl/GetProduct/Chocolates/" style="color: black;">
+                      Chocolates
+                    </a>
+                  </li>
+                  <li>
+                    <a href="/rooturl/GetProduct/Chocolates/" style="color: black;">
+                      Sweets & Mithai
+                    </a>
+                  </li>
+                </ul>
+
+              </li>
+
+              <li class="sidebar-menu-category" onclick="sidebar(this,2)">
+
+                <button class="sidebar-accordion-menu" data-accordion-btn>
+
+                  <div class="menu-title-flex">
+                    <img src="{% static '/assets/images/icons/bevarage.png' %} " alt="" class="menu-title-img" width="20"
+                      height="20">
+
+                    <p class="menu-title">Beverages</p>
+                  </div>
+
+                  <div>
+                    <ion-icon name="add-outline" class="add-icon"></ion-icon>
+                    <ion-icon name="remove-outline" class="remove-icon"></ion-icon>
+                  </div>
+
+                </button>
+
+                <ul  class="displayblock">
+                  <li>
+                    <a href="/rooturl/GetProduct/Tea/" style="color: black;">
+                      Tea
+                    </a> 
+                  </li>
+                  <li>
+                    <a href="/rooturl/GetProduct/Namkeen/" style="color: black;">
+                      Namkeen
+                    </a>
+                  </li>
+                  <li>
+                     <a href="/rooturl/GetProduct/Noodles/" style="color: black;">
+                      Noodles
+                    </a>
+                  </li>
+                  <li>
+                    <a href="/rooturl/GetProduct/Pasta/" style="color: black;">
+                      Pasta
+                    </a>
+                  </li>
+                </ul>
+
+              </li>
+
+              <li class="sidebar-menu-category" onclick="sidebar(this,3)">
+
+                <button class="sidebar-accordion-menu" data-accordion-btn>
+
+                  <div class="menu-title-flex">
+                    <img src="{% static '/assets/images/icons/olis.png' %} " alt=" class="menu-title-img" width="20"
+                      height="20">
+
+                    <p class="menu-title">Oils</p>
+                  </div>
+
+                  <div>
+                    <ion-icon name="add-outline" class="add-icon"></ion-icon>
+                    <ion-icon name="remove-outline" class="remove-icon"></ion-icon>
+                  </div>
+
+                </button>
+                <ul  class="displayblock">
+                  <li>
+                    <a href="/rooturl/GetProduct/Sunflower Oil/" style="color: black;">
+                      Sunflower Oil
+                    </a>
+                  </li>
+                  <li>
+                    <a href="/rooturl/GetProduct/Tea/" style="color: black;">
+                      Mustard Oil
+                    </a>
+                  </li>
+                  <li>
+                    <a href="/rooturl/GetProduct/Tea/" style="color: black;">
+                      Groundnut Oil    
+                    </a>
+                  </li>
+                  <li>
+                    <a href="/rooturl/GetProduct/Tea/" style="color: black;">
+                      Olive Oil
+                    </a>
+                  </li>
+                </ul>
+              </li>
+
+              <li class="sidebar-menu-category" onclick="sidebar(this,4)">
+
+                <button class="sidebar-accordion-menu" data-accordion-btn>
+
+                  <div class="menu-title-flex">
+                    <img src="{% static '/assets/images/icons/cosmetics.svg' %} " alt="" class="menu-title-img" width="20"
+                      height="20">
+
+                    <p class="menu-title">Personal Care</p>
+                  </div>
+
+                  <div>
+                    <ion-icon name="add-outline" class="add-icon"></ion-icon>
+                    <ion-icon name="remove-outline" class="remove-icon"></ion-icon>
+                  </div>
+
+                </button>
+                <ul  class="displayblock">
+                  <li>
+                    <a href="/rooturl/GetProduct/Soap/" style="color: black;">
+                      Soap    
+                    </a>
+                  </li>
+                  <li>
+                   <a href="/rooturl/GetProduct/Face Wash/" style="color: black;">
+                      Face Wash
+                    </a> 
+                  </li>
+                  <li>
+                    <a href="/rooturl/GetProduct/Shampoo/" style="color: black;">
+                      Shampoo
+                    </a>
+                  </li>
+                  <li>
+                    <a href="/rooturl/GetProduct/Toothpaste/" style="color: black;">
+                      Toothpaste
+                    </a>
+                  </li>
+                  <li>
+                    <a href="/rooturl/GetProduct/Shaving Cream/" style="color: black;">
+                      Shaving Cream
+                    </a>
+                  </li>
+                  <li>
+                    <a href="/rooturl/GetProduct/Hair Oil/" style="color: black;">
+                        Hair Oil  
+                    </a>
+                  </li>
+                </ul>
+                
+              </li>
+
+              <li class="sidebar-menu-category" onclick="sidebar(this,5)">
+
+                <button class="sidebar-accordion-menu" data-accordion-btn>
+
+                  <div class="menu-title-flex">
+                    <img src="{% static '/assets/images/icons/dryfruits.webp' %} " alt="" class="menu-title-img" width="20"
+                      height="20" style="border-radius:3px;">
+
+                    <p class="menu-title">Dry Fruits</p>
+                  </div>
+
+                  <div>
+                    <ion-icon name="add-outline" class="add-icon"></ion-icon>
+                    <ion-icon name="remove-outline" class="remove-icon"></ion-icon>
+                  </div>
+
+                </button>
+
+                <ul class="displayblock">
+                  <li>
+                    <a href="/rooturl/GetProduct/Almonds/" style="color: black;">
+                        Almonds        
+                    </a>
+                  </li>
+                  <li>
+                    <a href="/rooturl/GetProduct/Cashew Nuts/" style="color: black;">
+                        Cashew Nuts        
+                    </a>
+                  </li>
+                  <li>
+                    <a href="/rooturl/GetProduct/Dates/" style="color: black;">
+                        Dates        
+                    </a>
+                  </li>
+                  <li>
+                    <a href="/rooturl/GetProduct/Raisins/" style="color: black;">
+                        Raisins        
+                    </a>
+                  </li>
+                </ul>
+              </li>
+
+              <li class="sidebar-menu-category" onclick="sidebar(this,6)">
+
+                <button class="sidebar-accordion-menu" data-accordion-btn>
+
+                  <div class="menu-title-flex">
+                    <img src="{% static '/assets/images/icons/hanwash.png' %}" alt="" class="menu-title-img" width="20" height="20">
+
+                    <p class="menu-title">Sanitizers</p>
+                  </div>
+
+                  <div>
+                    <ion-icon name="add-outline" class="add-icon"></ion-icon>
+                    <ion-icon name="remove-outline" class="remove-icon"></ion-icon>
+                  </div>
+
+                </button>
+
+                <ul  class="displayblock">
+                  <li>
+                    <a href="/rooturl/GetProduct/Moisturising anti-bacterial/" style="color: black;">
+                        Moisturising anti-bacterial              
+                    </a>
+                  </li>
+                  <li>
+                    <a href="/rooturl/GetProduct/soft protect Handwash/" style="color: black;">
+                        soft protect Handwash              
+                    </a>
+                  </li>
+                  <li>
+                    <a href="/rooturl/GetProduct/Dettol Handwash/" style="color: black;">
+                        Dettol Handwash              
+                    </a>
+                  </li>
+                </ul>
+              </li>
+
+            </ul>
+
+          </div>
+
+          <div class="product-showcase">
+
+            <h3 class="showcase-heading">best sellers</h3>
+
+            <div class="showcase-wrapper">
+
+              <div class="showcase-container">
+
+                <div class="showcase">
+
+                  <a href="/rooturl/GetProduct/Atta/" class="showcase-img-box">
+                    <img src="{% static '/assets/images/products/one.jpg' %} " alt="" width="75" height="75"
+                      class="showcase-img">
+                  </a>
+
+                  <div class="showcase-content">
+
+                    <a href="/rooturl/GetProduct/Atta/">
+                      <h4 class="showcase-title" style="white-space: wrap;">
+                        Aashirvaad Pure Cow Ghee, Tetrapack, Rich Aroma, 1L
+                      </h4>
+                    </a>
+
+                    <div class="showcase-rating">
+                      <ion-icon name="star"></ion-icon>
+                      <ion-icon name="star"></ion-icon>
+                      <ion-icon name="star"></ion-icon>
+                      <ion-icon name="star"></ion-icon>
+                      <ion-icon name="star"></ion-icon>
+                    </div>
+
+                    <div class="price-box">
+                      <del> ₹790.00</del>
+                      <p class="price">₹698.00</p>
+                    </div>
+
+                  </div>
+
+                </div>
+
+                <div class="showcase">
+
+                  <a href="/rooturl/GetProduct/Salt/" class="showcase-img-box">
+                    <img src="{% static '/assets/images/products/two.jpg' %} " alt="" class="showcase-img"
+                      width="75" height="75">
+                  </a>
+
+                  <div class="showcase-content">
+
+                    <a href="/rooturl/GetProduct/Salt/">
+                      <h4 class="showcase-title">
+                        Tata Salt 1 Kg
+                      </h4>
+                    </a>
+                    <div class="showcase-rating">
+                      <ion-icon name="star"></ion-icon>
+                      <ion-icon name="star"></ion-icon>
+                      <ion-icon name="star"></ion-icon>
+                      <ion-icon name="star"></ion-icon>
+                      <ion-icon name="star-half-outline"></ion-icon>
+                    </div>
+
+                    <div class="price-box">
+                      <del>₹40.00</del>
+                      <p class="price">₹27.00</p>
+                    </div>
+
+                  </div>
+
+                </div>
+
+                <div class="showcase">
+
+                  <a href="/rooturl/GetProduct/Chocolates/" class="showcase-img-box">
+                    <img src="{% static '/assets/images/products/three.jpg' %} " alt="" class="showcase-img" width="75"
+                      height="75">
+                  </a>
+
+                  <div class="showcase-content">
+
+                    <a href="/rooturl/GetProduct/Chocolates/">
+                      <h4 class="showcase-title" style="white-space: wrap;">
+                        Cadbury Temptations Bar,70 Gram (Pack Of 6)
+                      </h4>
+                    </a>
+                    <div class="showcase-rating">
+                      <ion-icon name="star"></ion-icon>
+                      <ion-icon name="star"></ion-icon>
+                      <ion-icon name="star"></ion-icon>
+                      <ion-icon name="star"></ion-icon>
+                      <ion-icon name="star-half-outline"></ion-icon>
+                    </div>
+
+                    <div class="price-box">
+                      <del>₹780</del>
+                      <p class="price">₹520.00</p>
+                    </div>
+
+                  </div>
+
+                </div>
+
+                <div class="showcase">
+
+                  <a href="/rooturl/GetProduct/Oats/" class="showcase-img-box">
+                    <img src="{% static '/assets/images/products/four.jpg' %}" alt="" class="showcase-img" width="75"
+                      height="75">
+                  </a>
+
+                  <div class="showcase-content">
+
+                    <a href="/rooturl/GetProduct/Oats/">
+                      <h4 class="showcase-title" style="white-space: wrap;">Saffola Oats | 1kg with 300g Free</h4>
+                    </a>
+                    <div class="showcase-rating">
+                      <ion-icon name="star"></ion-icon>
+                      <ion-icon name="star"></ion-icon>
+                      <ion-icon name="star"></ion-icon>
+                      <ion-icon name="star"></ion-icon>
+                      <ion-icon name="star"></ion-icon>
+                    </div>
+
+                    <div class="price-box">
+                      <del>₹235</del>
+                      <p class="price">₹201.00</p>
+                    </div>
+
+                  </div>
+
+                </div>
+
+              </div>
+
+            </div>
+
+          </div>
+
+        </div>
+
+
+
+        <div class="product-box">
+
+          <!--
+            - PRODUCT MINIMAL
+          -->
+
+          <div class="product-minimal">
+
+            <div class="product-showcase">
+
+              <h2 class="title">New Arrivals</h2>
+
+              <div class="showcase-wrapper has-scrollbar">
+
+                <div class="showcase-container">
+
+                  <div class="showcase">
+
+                    <a href="#" class="showcase-img-box">
+                      <img src="{% static '/assets/images/products/five.jpg'%}" alt="" width="70" class="showcase-img">
+                    </a>
+
+                    <div class="showcase-content">
+
+                      <a href="/rooturl/GetProduct/Coffee/">
+                        <h4 class="showcase-title" style="white-space: wrap;">PERCOL Premium Instant Coffee|100g Jar</h4>
+                      </a>
+
+                      <a href="/rooturl/GetProduct/Coffee/" class="showcase-category">Coffee</a>
+
+                      <div class="price-box">
+                        <p class="price">₹697</p>
+                        <del>₹850</del>
+                      </div>
+
+                    </div>
+
+                  </div>
+
+                  <div class="showcase">
+                  
+                    <a href="/rooturl/GetProduct/Coffee/" class="showcase-img-box">
+                      <img src="{% static '/assets/images/products/six.jpg' %}" alt="" class="showcase-img" width="70">
+                    </a>
+                  
+                    <div class="showcase-content">
+                  
+                      <a href="#">
+                        <h4 class="showcase-title" style="white-space: wrap;">
+                          Bevzilla 400 Gram (200 Gm Pack of 2)
+                        </h4>
+                      </a>
+                  
+                      <a href="/rooturl/GetProduct/Coffee/" class="showcase-category">Coffee</a>
+                  
+                      <div class="price-box">
+                        <p class="price">₹679</p>
+                        <del>₹1,598.00</del>
+                      </div>
+                  
+                    </div>
+                  
+                  </div>
+
+                  <div class="showcase">
+                  
+                    <a href="#" class="showcase-img-box">
+                      <img src="{% static '/assets/images/products/seven.jpg' %}" alt="" class="showcase-img"
+                        width="70">
+                    </a>
+                  
+                    <div class="showcase-content">
+                  
+                      <a href="/rooturl/GetProduct/Coffee/">
+                        <h4 class="showcase-title" style="white-space: wrap;">
+                         NESCAFE Classic Instant Coffee Powder| 200g Pouch
+                        </h4>
+                      </a>
+                  
+                      <a href="/rooturl/GetProduct/Coffee/" class="showcase-category">Coffee</a>
+                  
+                      <div class="price-box">
+                        <p class="price">₹750</p>
+                        <del>₹870.00</del>
+                      </div>
+                  
+                    </div>
+                  
+                  </div>
+
+                  <div class="showcase">
+                  
+                    <a href="#" class="showcase-img-box">
+                      <img src="{% static '/assets/images/products/eight.jpg' %} " alt="" class="showcase-img"
+                        width="70">
+                    </a>
+                  
+                    <div class="showcase-content">
+                  
+                      <a href="/rooturl/GetProduct/Coffee/">
+                        <h4 class="showcase-title" style="white-space: wrap;">
+                         Tata Coffee Grand Filter Coffee, 500g
+                        </h4>
+                      </a>
+                  
+                      <a href="/rooturl/GetProduct/Coffee/" class="showcase-category">Coffee</a>
+                  
+                      <div class="price-box">
+                        <p class="price">₹257</p>
+                        <del>₹330</del>
+                      </div>
+                  
+                    </div>
+                  
+                  </div>
+
+                </div>
+                
+                <div class="showcase-container">
+                
+                  <div class="showcase">
+                
+                    <a href="/rooturl/GetProduct/Coffee/" class="showcase-img-box">
+                      <img src="{% static '/assets/images/products/nine.webp' %}" alt="" class="showcase-img"
+                        width="70">
+                    </a>
+                
+                    <div class="showcase-content">
+                
+                      <a href="/rooturl/GetProduct/Atta/">
+                        <h4 class="showcase-title" style="white-space: wrap;">
+                          Fortune Chakki Fresh Atta, 10 kg, 100% Atta 0% Maida
+                        </h4>
+                      </a>
+                
+                      <a href="/rooturl/GetProduct/Atta/" class="showcase-category">Atta</a>
+                
+                      <div class="price-box">
+                        <p class="price">₹577</p>
+                        <del>₹628</del>
+                      </div>
+                
+                    </div>
+                
+                  </div>
+                
+                  <div class="showcase">
+                
+                    <a href="#" class="showcase-img-box">
+                      <img src="{% static '/assets/images/products/ten.webp' %}" alt="" class="showcase-img"
+                        width="70">
+                    </a>
+                
+                    <div class="showcase-content">
+                
+                      <a href="/rooturl/GetProduct/Atta/">
+                        <h4 class="showcase-title" style="white-space: wrap;">
+                          Jiwa 30 Degree Wheat Flour/Atta|5g
+                        </h4>
+                      </a>
+                
+                      <a href="/rooturl/GetProduct/Atta/" class="showcase-category">Atta</a>
+                
+                      <div class="price-box">
+                        <p class="price">₹277.00</p>
+                        <del>₹325</del>
+                      </div>
+                
+                    </div>
+                
+                  </div>
+                
+                  <div class="showcase">
+                
+                    <a href="#" class="showcase-img-box">
+                      <img src="{% static '/assets/images/products/11.jpg' %}" alt="" class="showcase-img"
+                        width="70">
+                    </a>
+                
+                    <div class="showcase-content">
+                
+                      <a href="/rooturl/GetProduct/Rice/">
+                        <h4 class="showcase-title" style="white-space: wrap;">
+                          India Gate Basmati Rice Bag,5kg 
+                        </h4>
+                      </a>
+                
+                      <a href="#" class="showcase-category">Rice</a>
+                
+                      <div class="price-box">
+                        <p class="price">₹446.00</p>
+                        <del>₹460.00</del>
+                      </div>
+                
+                    </div>
+                
+                  </div>
+                
+                  <div class="showcase">
+                
+                    <a href="/rooturl/GetProduct/Dal/" class="showcase-img-box">
+                      <img src="{% static '/assets/images/products/12.jpg' %}" alt="" class="showcase-img"
+                        width="70">
+                    </a>
+                
+                    <div class="showcase-content">
+                
+                      <a href="/rooturl/GetProduct/Dal/">
+                        <h4 class="showcase-title" style="white-space:wrap;">
+                          Tata Sampann Chana Dal, 500g 
+                        </h4>
+                      </a>
+                
+                      <a href="/rooturl/GetProduct/Dal/" class="showcase-category">Dal</a>
+                
+                      <div class="price-box">
+                        <p class="price">₹79(₹158/kg)</p>
+                        <del>₹85.00</del>
+                      </div>
+                
+                    </div>
+                
+                  </div>
+                
+                </div>
+
+              </div>
+
+            </div>
+
+            <div class="product-showcase">
+            
+              <h2 class="title">Trending</h2>
+            
+              <div class="showcase-wrapper  has-scrollbar">
+            
+                <div class="showcase-container">
+            
+                  <div class="showcase">
+            
+                    <a href="#" class="showcase-img-box">
+                      <img src="{% static '/assets/images/products/13.jpg' %}" alt="" class="showcase-img"
+                        width="70">
+                    </a>
+            
+                    <div class="showcase-content">
+            
+                      <a href="/rooturl/GetProduct/Butter/">
+                        <h4 class="showcase-title" style="white-space: wrap;">
+                          Kissan Crunchy Peanut Butter| 350 g |With Fruit Ingredients
+                        </h4>
+                      </a>
+            
+                      <a href="/rooturl/GetProduct/Butter/" class="showcase-category">Snacks</a>
+            
+                      <div class="price-box">
+                        <p class="price">₹149.00</p>
+                        <del>₹175.00</del>
+                      </div>
+            
+                    </div>
+            
+                  </div>
+            
+                  <div class="showcase">
+            
+                    <a href="#" class="showcase-img-box">
+                      <img src="{% static '/assets/images/products/14.webp' %}" alt="" class="showcase-img"
+                        width="70">
+                    </a>
+            
+                    <div class="showcase-content">
+            
+                      <a href="/rooturl/GetProduct/Biscuits/">
+                        <h4 class="showcase-title" style="white-space: wrap;">
+                          Cadbury Chocobakes|CREAM 200g
+                        </h4>
+                      </a>
+            
+                      <a href="/rooturl/GetProduct/Biscuits/" class="showcase-category">Snacks</a>
+            
+                      <div class="price-box">
+                        <p class="price">₹107</p>
+                        <del>₹180</del>
+                      </div>
+            
+                    </div>
+            
+                  </div>
+            
+                  <div class="showcase">
+            
+                    <a href="/rooturl/GetProduct/Soaps/" class="showcase-img-box">
+                      <img src="{% static '/assets/images/products/15.webp' %}" alt="" class="showcase-img"
+                        width="70">
+                    </a>
+            
+                    <div class="showcase-content">
+            
+                      <a href="/rooturl/GetProduct/Soaps/">
+                        <h4 class="showcase-title" style="white-space: wrap;">
+                          Dettol Original Bathing Soap Bar
+                        </h4>
+                      </a>
+            
+                      <a href="#" class="showcase-category">soap</a>
+            
+                      <div class="price-box">
+                        <p class="price">₹316</p>
+                        <del>₹470</del>
+                      </div>
+            
+                    </div>
+            
+                  </div>
+            
+                  <div class="showcase">
+            
+                    <a href="#" class="showcase-img-box">
+                      <img src="{% static '/assets/images/products/16.webp' %}" alt="" class="showcase-img"
+                        width="70">
+                    </a>
+            
+                    <div class="showcase-content">
+            
+                      <a href="/rooturl/GetProduct/Soaps/">
+                        <h4 class="showcase-title" style="white-space:wrap;">
+                          CINTHOL Cool Soaps For Bath, Grade 1 Soap
+                        </h4>
+                      </a>
+            
+                      <a href="/rooturl/GetProduct/Soaps/" class="showcase-category">Soap</a>
+            
+                      <div class="price-box">
+                        <p class="price">₹213</p>
+                        <del>₹240</del>
+                      </div>
+            
+                    </div>
+            
+                  </div>
+            
+                </div>
+            
+                <div class="showcase-container">
+            
+                  <div class="showcase">
+            
+                    <a href="/rooturl/GetProduct/Noodles/" class="showcase-img-box">
+                      <img src="{% static '/assets/images/products/17.webp' %}" alt="" class="showcase-img"
+                        width="70">
+                    </a>
+            
+                    <div class="showcase-content">
+            
+                      <a href="/rooturl/GetProduct/Noodles/">
+                        <h4 class="showcase-title" style="white-space:wrap;">
+                          Maggi 2 - Minute Instant Noodles Vegetarian
+                        </h4>
+                      </a>
+            
+                      <a href="/rooturl/GetProduct/Noodles/" class="showcase-category">Berverages</a>
+            
+                      <div class="price-box">
+                        <p class="price">₹171</p>
+                        <del>₹180</del>
+                      </div>
+            
+                    </div>
+            
+                  </div>
+            
+                  <div class="showcase">
+            
+                    <a href="/rooturl/GetProduct/Noodles/" class="showcase-img-box">
+                      <img src="{% static '/assets/images/products/18.webp' %}" alt="" class="showcase-img" width="70">
+                    </a>
+            
+                    <div class="showcase-content">
+            
+                      <a href="/rooturl/GetProduct/Noodles/">
+                        <h4 class="showcase-title" style="white-space:wrap;">
+                          TOP RAMEN Noodles Vegetarian
+                        </h4>
+                      </a>
+            
+                      <a href="/rooturl/GetProduct/Noodles/" class="showcase-category">Beverages</a>
+            
+                      <div class="price-box">
+                        <p class="price">₹94</p>
+                        <del>₹110</del>
+                      </div>
+            
+                    </div>
+            
+                  </div>
+            
+                  <div class="showcase">
+            
+                    <a href="/rooturl/GetProduct/Toothpaste/" class="showcase-img-box">
+                      <img src="{% static '/assets/images/products/19.webp' %}" alt="" class="showcase-img"
+                        width="70">
+                    </a>
+            
+                    <div class="showcase-content">
+            
+                      <a href="/rooturl/GetProduct/Toothpaste/">
+                        <h4 class="showcase-title" style="white-space: wrap;">
+                          Dabur Red Paste (Combo Pack- 175g x 4) 
+                        </h4>
+                      </a>
+            
+                      <a href="/rooturl/GetProduct/Toothpaste/" class="showcase-category">Personal care</a>
+            
+                      <div class="price-box">
+                        <p class="price">₹315</p>
+                        <del>₹524</del>
+                      </div>
+            
+                    </div>
+            
+                  </div>
+            
+                  <div class="showcase">
+            
+                    <a href="#" class="showcase-img-box">
+                      <img src="{% static '/assets/images/products/20.webp' %}" alt="" class="showcase-img" width="70">
+                    </a>
+            
+                    <div class="showcase-content">
+            
+                      <a href="/rooturl/GetProduct/Toothpaste/">
+                        <h4 class="showcase-title" style="white-space:wrap;">
+                          Colgate MaxFresh Toothpaste, 4x150g
+                        </h4>
+                      </a>
+            
+                      <a href="/rooturl/GetProduct/Toothpaste/" class="showcase-category">Personal Care</a>
+            
+                      <div class="price-box">
+                        <p class="price">₹340</p>
+                        <del>₹688</del>
+                      </div>
+            
+                    </div>
+            
+                  </div>
+            
+                </div>
+            
+              </div>
+            
+            </div>
+
+            <div class="product-showcase">
+            
+              <h2 class="title">Top Rated</h2>
+            
+              <div class="showcase-wrapper  has-scrollbar">
+            
+                <div class="showcase-container">
+            
+                  <div class="showcase">
+            
+                    <a href="#" class="showcase-img-box">
+                      <img src="{% static '/assets/images/products/21.webp' %}" alt="" class="showcase-img"
+                        width="70">
+                    </a>
+            
+                    <div class="showcase-content">
+            
+                      <a href="/rooturl/GetProduct/Sunflower Oil/">
+                        <h4 class="showcase-title" style="white-space: wrap;">
+                          Gold Winner Refined Sunflower |Oil Pouch|(sooryagaandhi ennai)| 1L | 16% off
+                        </h4>
+                      </a>
+            
+                      <a href="/rooturl/GetProduct/Sunflower Oil/" class="showcase-category">Oil</a>
+            
+                      <div class="price-box">
+                        <p class="price">₹146</p>
+                        <del>₹175</del>
+                      </div>
+            
+                    </div>
+            
+                  </div>
+            
+                  <div class="showcase">
+            
+                    <a href="/rooturl/GetProduct/Sunflower Oil/" class="showcase-img-box">
+                      <img src="{% static '/assets/images/products/22.webp' %}" alt="" class="showcase-img"
+                        width="70">
+                    </a>
+            
+                    <div class="showcase-content">
+            
+                      <a href="/rooturl/GetProduct/Sunflower Oil/">
+                        <h4 class="showcase-title" style="white-space: wrap;">
+                          Mr.Gold Sunflower Oil Can| 15% off |5L |(sooryagaandhi ennai)
+                        </h4>
+                      </a>
+            
+                      <a href="/rooturl/GetProduct/Sunflower Oil/" class="showcase-category">Everyday Groceries</a>
+            
+                      <div class="price-box">
+                        <p class="price">₹737</p>
+                        <del>₹875</del>
+                      </div>
+            
+                    </div>
+            
+                  </div>
+            
+                  <div class="showcase">
+            
+                    <a href="/rooturl/GetProduct/Sugar/" class="showcase-img-box">
+                      <img src="{% static '/assets/images/products/23.webp' %}" alt="" class="showcase-img"
+                        width="70">
+                    </a>
+            
+                    <div class="showcase-content">
+            
+                      <a href="/rooturl/GetProduct/Sugar/">
+                        <h4 class="showcase-title" style="white-space: wrap;">
+                          Parry's White Label Sugar, 1kg
+                        </h4>
+                      </a>
+            
+                      <a href="/rooturl/GetProduct/Sugar/" class="showcase-category">
+                        Everyday Groceries
+                      </a>
+            
+                      <div class="price-box">
+                        <p class="price">₹51 (15% off)</p>
+                        <del>₹60</del>
+                      </div>
+            
+                    </div>
+            
+                  </div>
+            
+                  <div class="showcase">
+            
+                    <a href="/rooturl/GetProduct/Face Wash/" class="showcase-img-box">
+                      <img src="{% static '/assets/images/products/24.webp' %}" alt="" class="showcase-img"
+                        width="70">
+                    </a>
+            
+                    <div class="showcase-content">
+            
+                      <a href="/rooturl/GetProduct/Face Wash/">
+                        <h4 class="showcase-title" style="white-space: wrap;">
+                          Nivea Men Face Wash (Buy worth ₹599 save 2% )|Minimum 2 items
+                        </h4>
+                      </a>
+            
+                      <a href="/rooturl/GetProduct/Face Wash/" class="showcase-category">
+                        Personal care
+                      </a>
+            
+                      <div class="price-box">
+                        <p class="price">₹115 3% off</p>
+                        <del>₹119</del>
+                      </div>
+            
+                    </div>
+            
+                  </div>
+            
+                </div>
+            
+                <div class="showcase-container">
+            
+                  <div class="showcase">
+            
+                    <a href="/rooturl/GetProduct/Sugar/" class="showcase-img-box">
+                      <img src="{% static '/assets/images/products/25.webp' %}" alt="" class="showcase-img"
+                        width="70">
+                    </a>
+            
+                    <div class="showcase-content">
+        
+                      <a href="/rooturl/GetProduct/Sugar/">
+                        <h4 class="showcase-title" style="white-space:wrap;">
+                          Parry's Gold Premium Brown Sugar 500gm (8% off)
+                        </h4>
+                      </a>
+            
+                      <a href="/rooturl/GetProduct/Sugar/" class="showcase-category">Everyday Groceries</a>
+            
+                      <div class="price-box">
+                        <p class="price">₹37 (₹74/kg)</p>
+                        <del>₹40</del>
+                      </div>
+            
+                    </div>
+            
+                  </div>
+            
+                  <div class="showcase">
+            
+                    <a href="/rooturl/GetProduct/Almonds/" class="showcase-img-box">
+                      <img src="{% static '/assets/images/products/26.webp' %}" alt="" class="showcase-img" width="70">
+                    </a>
+            
+                    <div class="showcase-content">
+            
+                      <a href="/rooturl/GetProduct/Almonds/">
+                        <h4 class="showcase-title" style="white-space:wrap;">
+                          Happilo Premium Naturals (Baadam Paruppu) 200g 30% off
+                        </h4>
+                      </a>
+            
+                      <a href="/rooturl/GetProduct/Almonds/" class="showcase-category">
+                        Dry Fruits
+                      </a>
+            
+                      <div class="price-box">
+                        <p class="price">₹205</p>
+                        <del>₹295</del>
+                      </div>
+            
+                    </div>
+            
+                  </div>
+            
+                  <div class="showcase">
+            
+                    <a href="#" class="showcase-img-box">
+                      <img src="{% static '/assets/images/products/29.webp' %}" alt="" class="showcase-img"
+                        width="70">
+                    </a>
+            
+                    <div class="showcase-content">
+            
+                      <a href="/rooturl/GetProduct/Shampoo/">
+                        <h4 class="showcase-title" style="white-space:wrap;">
+                          DOVE Hairfall Rescue Shampoo (Buy worth ₹599 save 10% (Minimum 2 items))
+                        </h4>
+                      </a>
+            
+                      <a href="/rooturl/GetProduct/Shampoo/" class="showcase-category">Personal care</a>
+            
+                      <div class="price-box">
+                        <p class="price">₹888 43% off</p>
+                        <del>₹1,570</del>
+                      </div>
+            
+                    </div>
+            
+                  </div>
+            
+                  <div class="showcase">
+            
+                    <a href="/rooturl/GetProduct/Cashews/" class="showcase-img-box">
+                      <img src="{% static '/assets/images/products/27.webp' %}" alt="" class="showcase-img"
+                        width="70">
+                    </a>
+            
+                    <div class="showcase-content">
+            
+                      <a href="/rooturl/GetProduct/Cashews/">
+                        <h4 class="showcase-title">
+                          Tata Sampann Premium 100% Pure Cashews (Mundhiri) 18% off
+                        </h4>
+                      </a>
+            
+                      <a href="/rooturl/GetProduct/Cashews/" class="showcase-category">Dry Fruits</a>
+            
+                      <div class="price-box">
+                        <p class="price">₹634</p>
+                        <del>₹775</del>
+                      </div>
+            
+                    </div>
+            
+                  </div>
+            
+                </div>
+            
+              </div>
+            
+            </div>
+
+          </div>
+
+
+
+          <!--
+            - PRODUCT FEATURED
+          -->
+
+          <div class="product-featured">
+
+            <h2 class="title">Deal of the day</h2>
+
+            <div class="showcase-wrapper has-scrollbar">
+
+              <div class="showcase-container">
+
+                <div class="showcase">
+                  
+                  <div class="showcase-banner">
+                    <img src="{% static '/assets/images/products/shampoo.jpg' %}" alt="shampoo, conditioner & facewash packs" class="showcase-img">
+                  </div>
+
+                  <div class="showcase-content">
+                    
+                    <div class="showcase-rating">
+                      <ion-icon name="star"></ion-icon>
+                      <ion-icon name="star"></ion-icon>
+                      <ion-icon name="star"></ion-icon>
+                      <ion-icon name="star-outline"></ion-icon>
+                      <ion-icon name="star-outline"></ion-icon>
+                    </div>
+
+                    <a href="/rooturl/GetProduct/Shampoo/">
+                      <h3 class="showcase-title">shampoo, conditioner & facewash packs</h3>
+                    </a>
+
+                    <p class="showcase-desc">
+                      Lorem ipsum dolor sit amet consectetur Lorem ipsum
+                      dolor dolor sit amet consectetur Lorem ipsum dolor
+                    </p>
+
+                    <div class="price-box">
+                      <p class="price">₹150.00</p>
+
+                      <del>₹200.00</del>
+                    </div>
+
+                    <button class="add-cart-btn" onclick="cart()">add to cart</button>
+
+                    <div class="showcase-status">
+                      <div class="wrapper">
+                        <p>
+                          already sold: <b>20</b>
+                        </p>
+
+                        <p>
+                          available: <b>40</b>
+                        </p>
+                      </div>
+
+                      <div class="showcase-status-bar"></div>
+                    </div>
+
+                    <div class="countdown-box">
+
+                      <p class="countdown-desc">
+                        Hurry Up! Offer ends in:
+                      </p>
+
+                      <div class="countdown">
+
+                        <div class="countdown-content">
+
+                          <p class="display-number">360</p>
+
+                          <p class="display-text">Days</p>
+
+                        </div>
+
+                        <div class="countdown-content">
+                          <p class="display-number">24</p>
+                          <p class="display-text">Hours</p>
+                        </div>
+
+                        <div class="countdown-content">
+                          <p class="display-number">59</p>
+                          <p class="display-text">Min</p>
+                        </div>
+
+                        <div class="countdown-content">
+                          <p class="display-number">00</p>
+                          <p class="display-text">Sec</p>
+                        </div>
+
+                      </div>
+
+                    </div>
+
+                  </div>
+
+                </div>
+
+              </div>
+
+              <div class="showcase-container">
+              
+                <div class="showcase">
+              
+                  <div class="showcase-banner">
+                    <img src="{% static '/assets/images/products/28.png' %}" alt="" class="showcase-img">
+                  </div>
+              
+                  <div class="showcase-content">
+              
+                    <div class="showcase-rating">
+                      <ion-icon name="star"></ion-icon>
+                      <ion-icon name="star"></ion-icon>
+                      <ion-icon name="star"></ion-icon>
+                      <ion-icon name="star-outline"></ion-icon>
+                      <ion-icon name="star-outline"></ion-icon>
+                    </div>
+              
+                    <h3 class="showcase-title">
+                      <a href="/rooturl/GetProduct/Olive Oil/" class="showcase-title">Jivo Pomace Cooking Edible Olive Oil</a>
+                    </h3>
+              
+                    <p class="showcase-desc">
+                      Lorem ipsum dolor sit amet consectetur Lorem ipsum
+                      dolor dolor sit amet consectetur Lorem ipsum dolor
+                    </p>
+              
+                    <div class="price-box">
+                      <p class="price">₹550.00</p>
+                      <del>$600.00</del>
+                    </div>
+              
+                    <button class="add-cart-btn">add to cart</button>
+              
+                    <div class="showcase-status">
+                      <div class="wrapper">
+                        <p> already sold: <b>15</b> </p>
+              
+                        <p> available: <b>40</b> </p>
+                      </div>
+              
+                      <div class="showcase-status-bar"></div>
+                    </div>
+              
+                    <div class="countdown-box">
+              
+                      <p class="countdown-desc">Hurry Up! Offer ends in:</p>
+              
+                      <div class="countdown">
+                        <div class="countdown-content">
+                          <p class="display-number">360</p>
+                          <p class="display-text">Days</p>
+                        </div>
+              
+                        <div class="countdown-content">
+                          <p class="display-number">24</p>
+                          <p class="display-text">Hours</p>
+                        </div>
+              
+                        <div class="countdown-content">
+                          <p class="display-number">59</p>
+                          <p class="display-text">Min</p>
+                        </div>
+              
+                        <div class="countdown-content">
+                          <p class="display-number">00</p>
+                          <p class="display-text">Sec</p>
+                        </div>
+                      </div>
+              
+                    </div>
+              
+                  </div>
+              
+                </div>
+              
+              </div>
+
+            </div>
+
+          </div>
+
+
+
+          <!--
+            - PRODUCT GRID
+          -->
+
+          <div class="product-main">
+
+            <h2 class="title">New Products</h2>
+
+            <div class="product-grid">
+
+              <div class="showcase">
+
+                <div class="showcase-banner">
+
+                  <img src="{% static '/assets/images/products/30.webp' %}" alt=""  class="product-img default" width="100">
+                  <p class="showcase-badge">15%</p>
+
+                  <div class="showcase-actions">
+                    <a href="#">
+                      <button class="btn-action">
+                        <ion-icon name="heart-outline"></ion-icon>
+                      </button>
+                    </a>
+
+                    <button class="btn-action">
+                      <ion-icon name="eye-outline"></ion-icon>
+                    </button>
+
+                    <button class="btn-action">
+                      <ion-icon name="repeat-outline"></ion-icon>
+                    </button>
+
+                    <button class="btn-action">
+                      <ion-icon name="bag-add-outline"></ion-icon>
+                    </button>
+
+                  </div>
+
+                </div>
+
+                <div class="showcase-content">
+
+                  <a href="/rooturl/GetProduct/Shaving Cream/" class="showcase-category">Shaving Cream</a>
+
+                  <a href="/rooturl/GetProduct/Shaving Cream/">
+                    <h3 class="showcase-title">Gillette Classic Sensitive Shave Foam </h3>
+                  </a>
+
+                  <div class="showcase-rating">
+                    <ion-icon name="star"></ion-icon>
+                    <ion-icon name="star"></ion-icon>
+                    <ion-icon name="star"></ion-icon>
+                    <ion-icon name="star-outline"></ion-icon>
+                    <ion-icon name="star-outline"></ion-icon>
+                  </div>
+
+                  <div class="price-box">
+                    <p class="price">₹255</p>
+                    <del>₹275</del>
+                  </div>
+
+                </div>
+
+              </div>
+
+              <div class="showcase">
+              
+                <div class="showcase-banner">
+                  <img src="{% static '/assets/images/products/31.webp' %}" alt="" class="product-img default" width="200" height="300" style="position: relative;left: 10px;">
+              
+                  <p class="showcase-badge angle black">sale</p>
+              
+                  <div class="showcase-actions">
+                    <button class="btn-action">
+                      <ion-icon name="heart-outline"></ion-icon>
+                    </button>
+              
+                    <button class="btn-action">
+                      <ion-icon name="eye-outline"></ion-icon>
+                    </button>
+              
+                    <button class="btn-action">
+                      <ion-icon name="repeat-outline"></ion-icon>
+                    </button>
+              
+                    <button class="btn-action">
+                      <ion-icon name="bag-add-outline"></ion-icon>
+                    </button>
+                  </div>
+                </div>
+              
+                <div class="showcase-content">
+                  <a href="/rooturl/GetProduct/Detergents/" class="showcase-category">Detergents</a>
+              
+                  <h3>
+                    <a href="#" class="showcase-title">
+                      Surf excel Matic Front Load Liquid Detergent Refill Pouch Multi-Fragrance 4L.
+                    </a>
+                  </h3>
+              
+                  <div class="showcase-rating">
+                    <ion-icon name="star"></ion-icon>
+                    <ion-icon name="star"></ion-icon>
+                    <ion-icon name="star"></ion-icon>
+                    <ion-icon name="star-outline"></ion-icon>
+                    <ion-icon name="star-outline"></ion-icon>
+                  </div>
+              
+                  <div class="price-box">
+                    <p class="price">₹665</p>
+                    <del>₹885</del>
+                  </div>
+              
+                </div>
+              
+              </div>
+
+              <div class="showcase">
+              
+                <div class="showcase-banner">
+                  <img src="{% static '/assets/images/products/32.webp' %}" alt="" class="product-img default"  width="200" height="300" style="position: relative;left: 10px;">
+              
+                  <div class="showcase-actions">
+                    <button class="btn-action">
+                      <ion-icon name="heart-outline"></ion-icon>
+                    </button>
+              
+                    <button class="btn-action">
+                      <ion-icon name="eye-outline"></ion-icon>
+                    </button>
+              
+                    <button class="btn-action">
+                      <ion-icon name="repeat-outline"></ion-icon>
+                    </button>
+              
+                    <button class="btn-action">
+                      <ion-icon name="bag-add-outline"></ion-icon>
+                    </button>
+                  </div>
+                </div>
+              
+                <div class="showcase-content">
+                  <a href="/rooturl/GetProduct/Cold Drinks/" class="showcase-category">Cold Drinks</a>
+              
+                  <h3>
+                    <a href="#" class="showcase-title">
+                      Mountain Dew Soft Drink Can Tin 5% off
+                    </a>
+                  </h3>
+              
+                  <div class="showcase-rating">
+                    <ion-icon name="star"></ion-icon>
+                    <ion-icon name="star"></ion-icon>
+                    <ion-icon name="star"></ion-icon>
+                    <ion-icon name="star-outline"></ion-icon>
+                    <ion-icon name="star-outline"></ion-icon>
+                  </div>
+              
+                  <div class="price-box">
+                    <p class="price">₹228</p>
+                    <del>₹240</del>
+                  </div>
+              
+                </div>
+              
+              </div>
+
+              <div class="showcase">
+              
+                <div class="showcase-banner">
+                  <img src="{% static '/assets/images/products/33.webp' %}" alt="" class="product-img default" width="200" height="300" style="position: relative;left: 10px;">
+                  
+                  <p class="showcase-badge angle pink">New</p>
+              
+                  <div class="showcase-actions">
+                    <button class="btn-action">
+                      <ion-icon name="heart-outline"></ion-icon>
+                    </button>
+              
+                    <button class="btn-action">
+                      <ion-icon name="eye-outline"></ion-icon>
+                    </button>
+              
+                    <button class="btn-action">
+                      <ion-icon name="repeat-outline"></ion-icon>
+                    </button>
+              
+                    <button class="btn-action">
+                      <ion-icon name="bag-add-outline"></ion-icon>
+                    </button>
+                  </div>
+                </div>
+              
+                <div class="showcase-content">
+                  <a href="/rooturl/GetProduct/Hair Oil/" class="showcase-category">Hair Oil</a>
+              
+                  <h3>
+                    <a href="#" class="showcase-title">
+                      Navratna Ayurvedic Cool Oil|With 9 Ayurvedic Herbs |Relieves Headache(herbal ennai) 19% off 800ml
+                    </a>
+                  </h3>
+              
+                  <div class="showcase-rating">
+                    <ion-icon name="star"></ion-icon>
+                    <ion-icon name="star"></ion-icon>
+                    <ion-icon name="star"></ion-icon>
+                    <ion-icon name="star"></ion-icon>
+                    <ion-icon name="star"></ion-icon>
+                  </div>
+              
+                  <div class="price-box">
+                    <p class="price">₹409</p>
+                    <del>₹510</del>
+                  </div>
+              
+                </div>
+              
+              </div>
+
+              <div class="showcase">
+              
+                <div class="showcase-banner">
+                  <img src="{% static '/assets/images/products/34.webp' %}" alt="" class="product-img default" width="200" height="300" style="position: relative;left: 10px;">
+                  
+              
+                  <div class="showcase-actions">
+                    <button class="btn-action">
+                      <ion-icon name="heart-outline"></ion-icon>
+                    </button>
+              
+                    <button class="btn-action">
+                      <ion-icon name="eye-outline"></ion-icon>
+                    </button>
+              
+                    <button class="btn-action">
+                      <ion-icon name="repeat-outline"></ion-icon>
+                    </button>
+              
+                    <button class="btn-action">
+                      <ion-icon name="bag-add-outline"></ion-icon>
+                    </button>
+                  </div>
+                </div>
+              
+                <div class="showcase-content">
+                  <a href="/rooturl/GetProduct/Olive Oil/" class="showcase-category">Olive Oil</a>
+              
+                  <h3>
+                    <a href="/rooturl/GetProduct/Olive Oil/" class="showcase-title">
+                      Del Monte Extra Light Olive Oil Plastic Bottle (olive ennai)2L
+                    </a>
+                  </h3>
+              
+                  <div class="showcase-rating">
+                    <ion-icon name="star"></ion-icon>
+                    <ion-icon name="star"></ion-icon>
+                    <ion-icon name="star"></ion-icon>
+                    <ion-icon name="star"></ion-icon>
+                    <ion-icon name="star"></ion-icon>
+                  </div>
+              
+                  <div class="price-box">
+                    <p class="price">₹2,995</p>
+                    <del>₹3,999</del>
+                  </div>
+              
+                </div>
+              
+              </div>
+
+              <div class="showcase">
+              
+                <div class="showcase-banner">
+                  <img src="{% static '/assets/images/products/35.webp' %}" alt="" class="product-img default"
+                    width="200" height="300" style="position: relative;left: 10px;">
+                  
+              
+                  <p class="showcase-badge angle black">sale</p>
+              
+                  <div class="showcase-actions">
+                    <button class="btn-action">
+                      <ion-icon name="heart-outline"></ion-icon>
+                    </button>
+              
+                    <button class="btn-action">
+                      <ion-icon name="eye-outline"></ion-icon>
+                    </button>
+              
+                    <button class="btn-action">
+                      <ion-icon name="repeat-outline"></ion-icon>
+                    </button>
+              
+                    <button class="btn-action">
+                      <ion-icon name="bag-add-outline"></ion-icon>
+                    </button>
+                  </div>
+                </div>
+              
+                <div class="showcase-content">
+                  <a href="/rooturl/GetProduct/Dates/" class="showcase-category">Lion Dates</a>
+              
+                  <h3>
+                    <a href="#" class="showcase-title">
+                      LION Desert King Dates Dates (perinchampazham) 19% off 250g
+                    </a>
+                  </h3>
+              
+                  <div class="showcase-rating">
+                    <ion-icon name="star"></ion-icon>
+                    <ion-icon name="star"></ion-icon>
+                    <ion-icon name="star"></ion-icon>
+                    <ion-icon name="star-outline"></ion-icon>
+                    <ion-icon name="star-outline"></ion-icon>
+                  </div>
+              
+                  <div class="price-box">
+                    <p class="price">₹115</p>
+                    <del>₹142</del>
+                  </div>
+              
+                </div>
+              
+              </div>
+
+              <div class="showcase">
+              
+                <div class="showcase-banner">
+                  <img src="{% static '/assets/images/products/36.webp' %}" alt="" class="product-img default"
+                    width="200" height="300" style="position: relative;left: 10px;">
+                  <div class="showcase-actions">
+                    <button class="btn-action">
+                      <ion-icon name="heart-outline"></ion-icon>
+                    </button>
+              
+                    <button class="btn-action">
+                      <ion-icon name="eye-outline"></ion-icon>
+                    </button>
+              
+                    <button class="btn-action">
+                      <ion-icon name="repeat-outline"></ion-icon>
+                    </button>
+              
+                    <button class="btn-action">
+                      <ion-icon name="bag-add-outline"></ion-icon>
+                    </button>
+                  </div>
+                </div>
+              
+                <div class="showcase-content">
+                  <a href="/rooturl/GetProduct/Raisins/" class="showcase-category">Raisins</a>
+              
+                  <h3>
+                    <a href="/rooturl/GetProduct/Raisins/" class="showcase-title">
+                      Happilo Premium Afghani Seedless Black Raisins (Dhiratchai) 37% off 250g
+                    </a>
+                  </h3>
+              
+                  <div class="showcase-rating">
+                    <ion-icon name="star"></ion-icon>
+                    <ion-icon name="star"></ion-icon>
+                    <ion-icon name="star"></ion-icon>
+                    <ion-icon name="star"></ion-icon>
+                    <ion-icon name="star-outline"></ion-icon>
+                  </div>
+              
+                  <div class="price-box">
+                    <p class="price">₹197</p>
+                    <del>₹315</del>
+                  </div>
+              
+                </div>
+              
+              </div>
+
+              <div class="showcase">
+              
+                <div class="showcase-banner">
+                  <img src="{% static '/assets/images/products/37.webp' %}" alt="" class="product-img default"
+                   width="200" height="300" style="position: relative;left: 10px;">
+              
+                  <p class="showcase-badge angle black">sale</p>
+              
+                  <div class="showcase-actions">
+                    <button class="btn-action">
+                      <ion-icon name="heart-outline"></ion-icon>
+                    </button>
+              
+                    <button class="btn-action">
+                      <ion-icon name="eye-outline"></ion-icon>
+                    </button>
+              
+                    <button class="btn-action">
+                      <ion-icon name="repeat-outline"></ion-icon>
+                    </button>
+              
+                    <button class="btn-action">
+                      <ion-icon name="bag-add-outline"></ion-icon>
+                    </button>
+                  </div>
+                </div>
+              
+                <div class="showcase-content">
+                  <a href="#" class="showcase-category">
+                    Kabuli Chana 
+                  </a>
+              
+                  <h3>
+                    <a href="/rooturl/GetProduct/Dal/" class="showcase-title">
+                      Tata Sampann Kabuli Chana (Vella Sundal) (Whole) 24% off
+                    </a>
+                  </h3>
+              
+                  <div class="showcase-rating">
+                    <ion-icon name="star"></ion-icon>
+                    <ion-icon name="star"></ion-icon>
+                    <ion-icon name="star"></ion-icon>
+                    <ion-icon name="star-outline"></ion-icon>
+                    <ion-icon name="star-outline"></ion-icon>
+                  </div>
+              
+                  <div class="price-box">
+                    <p class="price">₹175</p>
+                    <del>₹232</del>
+                  </div>
+              
+                </div>
+              
+              </div>
+
+              <div class="showcase">
+              
+                <div class="showcase-banner">
+                  <img src="{% static '/assets/images/products/38.webp' %}" alt="Mens Winter Leathers Jackets" class="product-img default"
+                    width="200" height="300" style="position: relative;left: 10px;">
+                  
+                  <div class="showcase-actions">
+                    <button class="btn-action">
+                      <ion-icon name="heart-outline"></ion-icon>
+                    </button>
+              
+                    <button class="btn-action">
+                      <ion-icon name="eye-outline"></ion-icon>
+                    </button>
+              
+                    <button class="btn-action">
+                      <ion-icon name="repeat-outline"></ion-icon>
+                    </button>
+              
+                    <button class="btn-action">
+                      <ion-icon name="bag-add-outline"></ion-icon>
+                    </button>
+                  </div>
+                </div>
+              
+                <div class="showcase-content">
+                  <a href="/rooturl/GetProduct/Chilli Powder/" class="showcase-category">
+                    Chilli Powder
+                  </a>
+              
+                  <h3>
+                    <a href="#" class="showcase-title">
+                      MTR Chili Powder 50% off 500g
+                    </a>
+                  </h3>
+              
+                  <div class="showcase-rating">
+                    <ion-icon name="star"></ion-icon>
+                    <ion-icon name="star"></ion-icon>
+                    <ion-icon name="star"></ion-icon>
+                    <ion-icon name="star"></ion-icon>
+                    <ion-icon name="star-outline"></ion-icon>
+                  </div>
+              
+                  <div class="price-box">
+                    <p class="price">₹99</p>
+                    <del>₹200</del>
+                  </div>
+              
+                </div>
+              
+              </div>
+
+              <div class="showcase">
+              
+                <div class="showcase-banner">
+                  <img src="{% static '/assets/images/products/39.jpg' %}" alt="" class="product-img default"
+                    width="200" height="300" style="position: relative;left: 10px;">
+                  
+              
+                  <p class="showcase-badge angle black">sale</p>
+              
+                  <div class="showcase-actions">
+                    <button class="btn-action">
+                      <ion-icon name="heart-outline"></ion-icon>
+                    </button>
+              
+                    <button class="btn-action">
+                      <ion-icon name="eye-outline"></ion-icon>
+                    </button>
+              
+                    <button class="btn-action">
+                      <ion-icon name="repeat-outline"></ion-icon>
+                    </button>
+              
+                    <button class="btn-action">
+                      <ion-icon name="bag-add-outline"></ion-icon>
+                    </button>
+                  </div>
+                </div>
+              
+                <div class="showcase-content">
+                  <a href="/rooturl/GetProduct/Groundnut Oil/" class="showcase-category">Groundnut Oil</a>
+              
+                  <h3>
+                    <a href="#" class="showcase-title">
+                      Tata Simply Better Pure & Unrefined Cold Pressed Groundnut (Peanut) Oil.1L %37off 
+                    </a>
+                  </h3>
+              
+                  <div class="showcase-rating">
+                    <ion-icon name="star"></ion-icon>
+                    <ion-icon name="star"></ion-icon>
+                    <ion-icon name="star"></ion-icon>
+                    <ion-icon name="star-outline"></ion-icon>
+                    <ion-icon name="star-outline"></ion-icon>
+                  </div>
+              
+                  <div class="price-box">
+                    <p class="price">₹316.00</p>
+                    <del>₹500.00</del>
+                  </div>
+              
+                </div>
+              
+              </div>
+
+              <div class="showcase">
+              
+                <div class="showcase-banner">
+                  <img src="{% static '/assets/images/products/40.jpg' %}" alt="" class="product-img default"
+                    width="200" height="300" style="position: relative;left: 10px;">
+                  
+              
+                  <div class="showcase-actions">
+                    <button class="btn-action">
+                      <ion-icon name="heart-outline"></ion-icon>
+                    </button>
+              
+                    <button class="btn-action">
+                      <ion-icon name="eye-outline"></ion-icon>
+                    </button>
+              
+                    <button class="btn-action">
+                      <ion-icon name="repeat-outline"></ion-icon>
+                    </button>
+              
+                    <button class="btn-action">
+                      <ion-icon name="bag-add-outline"></ion-icon>
+                    </button>
+                  </div>
+                </div>
+              
+                <div class="showcase-content">
+                  <a href="/rooturl/GetProduct/Ghee/" class="showcase-category">NESTLE Ghee</a>
+              
+                  <h3>
+                    <a href="#" class="showcase-title">
+                      Everyday NESTLE SHAHI GHEE, 1 Liter.
+
+                    </a>
+                  </h3>
+              
+                  <div class="showcase-rating">
+                    <ion-icon name="star"></ion-icon>
+                    <ion-icon name="star"></ion-icon>
+                    <ion-icon name="star"></ion-icon>
+                    <ion-icon name="star"></ion-icon>
+                    <ion-icon name="star-outline"></ion-icon>
+                  </div>
+              
+                  <div class="price-box">
+                    <p class="price">₹630.00</p>
+                    <del>₹549.00</del>
+                  </div>
+              
+                </div>
+              
+              </div>
+
+              <div class="showcase">
+              
+                <div class="showcase-banner">
+                  <img src="{% static '/assets/images/products/41.jpg' %}" alt="Better Basics French Terry Sweatshorts"
+                    class="product-img default" width="200" height="300" style="position: relative;left: 10px;">
+                  
+              
+                  <p class="showcase-badge angle black">sale</p>
+              
+                  <div class="showcase-actions">
+                    <button class="btn-action">
+                      <ion-icon name="heart-outline"></ion-icon>
+                    </button>
+              
+                    <button class="btn-action">
+                      <ion-icon name="eye-outline"></ion-icon>
+                    </button>
+              
+                    <button class="btn-action">
+                      <ion-icon name="repeat-outline"></ion-icon>
+                    </button>
+              
+                    <button class="btn-action">
+                      <ion-icon name="bag-add-outline"></ion-icon>
+                    </button>
+                  </div>
+                </div>
+              
+                <div class="showcase-content">
+                  <a href="/rooturl/GetProduct/Salt/" class="showcase-category">
+                    Salt
+                  </a>
+              
+                  <h3>
+                    <a href="/rooturl/GetProduct/Salt/" class="showcase-title">Urban Platter Pink Himalayan Rock Salt Powder, 1.5kg (Mineral-Rich Salt | Unrefined & Pure ) Salt</a>
+                  </h3>
+              
+                  <div class="showcase-rating">
+                    <ion-icon name="star"></ion-icon>
+                    <ion-icon name="star"></ion-icon>
+                    <ion-icon name="star"></ion-icon>
+                    <ion-icon name="star-outline"></ion-icon>
+                    <ion-icon name="star-outline"></ion-icon>
+                  </div>
+              
+                  <div class="price-box">
+                    <p class="price">₹325</p>
+                    <del>₹400</del>
+                  </div>
+              
+                </div>
+              
+              </div>
+
+            </div>
+
+          </div>
+
+        </div>
+
+      </div>
+
+    </div>
+
+
+     <!--
+      - TESTIMONIALS, CTA & SERVICE
+    -->
+
+    <div>
+
+      <div class="container">
+
+        <div class="testimonials-box">
+
+          <!--
+            - TESTIMONIALS
+          -->
+
+          <div class="testimonial">
+
+            <h2 class="title">testimonial</h2>
+
+            <div class="testimonial-card">
+
+              <img src="{% static  '/assets/images/Student.jpeg' %}" alt="" class="testimonial-banner" width="80" height="80">
+
+              <p class="testimonial-name">Jagan n.s</p>
+
+              <p class="testimonial-title">Founder</p>
+
+              <img src="{% static '/assets/images/icons/quotes.svg' %}" alt="quotation" class="quotation-img" width="26">
+
+              <p class="testimonial-desc">
+                I’m the Founder of this website and a skilled web developer known for creating high-performing, user-friendly websites.
+              </p>
+
+            </div>
+
+          </div>
+
+
+
+          <!--
+            - CTA
+          -->
+
+          <div class="cta-container">
+
+            <img src="{% static '/assets/images/cta-banner.jpg' %}" alt="summer collection" class="cta-banner">
+
+            <a href="#" class="cta-content">
+
+              <p class="discount">25% Discount</p>
+
+              <h2 class="cta-title">Summer collection</h2>
+
+              <p class="cta-text">Starting @ ₹10</p>
+
+              <button class="cta-btn">Shop now</button>
+
+            </a>
+
+          </div>
+
+
+
+          <!--
+            - SERVICE
+          -->
+
+          <div class="service">
+
+            <h2 class="title">Our Services</h2>
+
+            <div class="service-container">
+
+              <a href="#" class="service-item">
+
+                <div class="service-icon">
+                  <ion-icon name="boat-outline"></ion-icon>
+                </div>
+
+                <div class="service-content">
+
+                  <h3 class="service-title">Fast Delivery</h3>
+                  <p class="service-desc">For Order Over ₹100</p>
+
+                </div>
+
+              </a>
+
+              <a href="#" class="service-item">
+              
+                <div class="service-icon">
+                  <ion-icon name="rocket-outline"></ion-icon>
+                </div>
+              
+                <div class="service-content">
+              
+                  <h3 class="service-title">Next Day delivery</h3>
+                  <p class="service-desc">Within Chennai Orders Only</p>
+              
+                </div>
+              
+              </a>
+
+              <a href="#" class="service-item">
+              
+                <div class="service-icon">
+                  <ion-icon name="call-outline"></ion-icon>
+                </div>
+              
+                <div class="service-content">
+              
+                  <h3 class="service-title">Best Online Support</h3>
+                  <p class="service-desc">Hours: 8AM - 9PM</p>
+              
+                </div>
+              
+              </a>
+
+              <a href="#" class="service-item">
+              
+                <div class="service-icon">
+                  <ion-icon name="arrow-undo-outline"></ion-icon>
+                </div>
+              
+                <div class="service-content">
+              
+                  <h3 class="service-title">Contact</h3>
+                  <p class="service-desc">+91 7904136090</p>
+              
+                </div>
+              
+              </a>
+
+              <a href="#" class="service-item">
+              
+                <div class="service-icon">
+                  <ion-icon name="ticket-outline"></ion-icon>
+                </div>
+              
+                <div class="service-content">
+              
+                  <h3 class="service-title">Any issues? Report through email:)</h3>
+                  <p class="service-desc">jagan10ns@gmail.com</p>
+              
+                </div>
+              
+              </a>
+
+            </div>
+
+          </div>
+
+        </div>
+
+      </div>
+
+    </div>
+
+
+
+
+
+    <!--
+      - BLOG
+    -->
+
+    <div class="blog">
+
+      <div class="container">
+
+        <div class="blog-container has-scrollbar">
+
+          <div class="blog-card">
+
+            <a href="#">
+              <img src="{% static '/assets/images/blog-1.jpg' %}" alt="Clothes Retail KPIs 2021 Guide for Clothes Executives" width="300" class="blog-banner">
+            </a>
+
+            <div class="blog-content">
+
+              <a href="#" class="blog-category">Daily Shop</a>
+
+              <a href="#">
+                <h3 class="blog-title">Grocery Retail KPIs 2025 Guide for Grocery Store Executives"</h3>
+              </a>
+
+              <p class="blog-meta">
+                By <cite>Mr Admin</cite> / <time datetime="2025-07-21">July 21, 2022</time>
+              </p>
+
+            </div>
+
+          </div>
+
+          <div class="blog-card">
+          
+            <a href="#">
+              <img src="{% static '/assets/images/blog-2.jpg' %}" alt="Curbside fashion Trends: How to Win the Pickup Battle."
+                class="blog-banner" width="300">
+            </a>
+          
+            <div class="blog-content">
+          
+              <a href="#" class="blog-category">Beverages</a>
+          
+              <h3>
+                <a href="#" class="blog-title">
+                  Refresh on the Go: Beverage Trends Driving Curbside Success.
+                </a>
+              </h3>
+          
+              <p class="blog-meta">
+                By <cite>Mr Robin</cite> / <time datetime="2025-05-20">May 20, 2025</time>
+              </p>
+          
+            </div>
+          
+          </div>
+
+          <div class="blog-card">
+          
+            <a href="#">
+              <img src="{% static '/assets/images/blog-3.jpg' %}" alt="EBT vendors: Claim Your Share of SNAP Online Revenue."
+                class="blog-banner" width="300">
+            </a>
+          
+            <div class="blog-content">
+          
+              <a href="#" class="blog-category">Personal Care</a>
+          
+              <h3>
+                <a href="#" class="blog-title">Claim the Cart: How Grocery Stores Can Win with SNAP Online</a>
+              </h3>
+          
+              <p class="blog-meta">
+                By <cite>Mr Selsa</cite> / <time datetime="2025-07-20">July 10, 2025</time>
+              </p>
+          
+            </div>
+          
+          </div>
+
+          <div class="blog-card">
+          
+            <a href="#">
+              <img src="{% static '/assets/images/blog-4.jpg' %}" alt="Curbside fashion Trends: How to Win the Pickup Battle."
+                class="blog-banner" width="300">
+            </a>
+          
+            <div class="blog-content">
+          
+              <a href="#" class="blog-category">Snacks</a>
+          
+              <h3>
+                <a href="#" class="blog-title">Curbside fashion Trends: How to Win the Pickup Battle.</a>
+              </h3>
+          
+              <p class="blog-meta">
+                By <cite>Mr Pawar</cite> / <time datetime="2025-07-18">July 18, 2025</time>
+              </p>
+          
+            </div>
+          
+          </div>
+
+        </div>
+
+      </div>
+
+    </div>
+
+  </main>
+
+  
+
+
+  <!--
+    - FOOTER
+  -->
+
+  <footer>
+    <div class="footer-category">
+
+      <div class="container">
+
+        <h2 class="footer-category-title">Brand directory</h2>
+
+        <div class="footer-category-box">
+
+          <h3 class="category-box-title">Dairy:</h3>
+
+          <a href="#" class="footer-category-link">Milk</a>
+          <a href="#" class="footer-category-link">Curd&Yogurt</a>
+          <a href="#" class="footer-category-link">Bread</a>
+          <a href="#" class="footer-category-link">Butter</a>
+          <a href="#" class="footer-category-link">Cheese</a>
+          <a href="#" class="footer-category-link">Paneer</a>
+          <a href="#" class="footer-category-link">Ghee</a>
+
+        </div>
+
+        <div class="footer-category-box">
+          <h3 class="category-box-title">Staples & Essentials :</h3>
+        
+          <a href="#" class="footer-category-link">Rice</a>
+          <a href="#" class="footer-category-link">Wheat Flour (Atta)</a>
+          <a href="#" class="footer-category-link">Maida</a>
+          <a href="#" class="footer-category-link">Sugar</a>
+          <a href="#" class="footer-category-link">Salt</a>
+          <a href="#" class="footer-category-link">Jaggery</a>
+          <a href="#" class="footer-category-link">Toor Dal, Moong Dal, Chana Dal</a>
+          <a href="#" class="footer-category-link">Sunflower</a>
+          <a href="#" class="footer-category-link">Groundnut</a>
+          <a href="#" class="footer-category-link">Mustard</a>
+        </div>
+
+        <div class="footer-category-box">
+          <h3 class="category-box-title">Snacks & Packaged Foods :</h3>
+        
+          <a href="#" class="footer-category-link">Chips </a>
+          <a href="#" class="footer-category-link">Popcorn</a>
+          <a href="#" class="footer-category-link">Namkeen</a>
+          <a href="#" class="footer-category-link">Biscuit</a>
+          <a href="#" class="footer-category-link">Chocolates</a>
+          <a href="#" class="footer-category-link">Candies</a>
+          <a href="#" class="footer-category-link">Noodles</a>
+          <a href="#" class="footer-category-link">Pasta</a>
+        </div>
+
+        <div class="footer-category-box">
+          <h3 class="category-box-title">Beverages :</h3>
+        
+          <a href="#" class="footer-category-link">Shampoo</a>
+          <a href="#" class="footer-category-link">Tea</a>
+          <a href="#" class="footer-category-link">Coffee</a>
+          <a href="#" class="footer-category-link">Soft Drinks (Cola, Soda, Fruit Juice)</a>
+          <a href="#" class="footer-category-link">Energy Drinks</a>
+          <a href="#" class="footer-category-link">Health Mixes</a>
+          <a href="#" class="footer-category-link">Soaps</a>
+          <a href="#" class="footer-category-link">Body soap</a>
+          <a href="#" class="footer-category-link">scrub</a>
+          <a href="#" class="footer-category-link">Toothpaste</a>
+          <a href="#" class="footer-category-link">Hair Oil</a>
+          <a href="#" class="footer-category-link">Detergent</a>
+          <a href="#" class="footer-category-link">Floor Cleaner</a>
+          <a href="#" class="footer-category-link">Mosquito Repellent</a>
+          <a href="#" class="footer-category-link">Dishwash Liquid</a>
+        </div>
+
+      </div>
+
+    </div>
+
+    <div class="footer-nav">
+
+      <div class="container">
+
+        <ul class="footer-nav-list">
+
+          <li class="footer-nav-item">
+            <h2 class="nav-title">Popular Categories</h2>
+          </li>
+
+          <li class="footer-nav-item">
+            <a href="#" class="footer-nav-link">Daily Groceries</a>
+          </li>
+
+          <li class="footer-nav-item">
+            <a href="#" class="footer-nav-link">Brand Products</a>
+          </li>
+
+          <li class="footer-nav-item">
+            <a href="#" class="footer-nav-link">Cooking Masalas</a>
+          </li>
+
+          <li class="footer-nav-item">
+            <a href="#" class="footer-nav-link">Sanitizers</a>
+          </li>
+
+          <li class="footer-nav-item">
+            <a href="#" class="footer-nav-link">Dry Fruits & Nuts</a>
+          </li>
+
+        </ul>
+
+        <ul class="footer-nav-list">
+        
+          <li class="footer-nav-item">
+            <h2 class="nav-title">Products</h2>
+          </li>
+        
+          <li class="footer-nav-item">
+            <a href="#" class="footer-nav-link">Prices drop</a>
+          </li>
+        
+          <li class="footer-nav-item">
+            <a href="#" class="footer-nav-link">New products</a>
+          </li>
+        
+          <li class="footer-nav-item">
+            <a href="#" class="footer-nav-link">Best sales</a>
+          </li>
+        
+          <li class="footer-nav-item">
+            <a href="#" class="footer-nav-link">Contact us</a>
+          </li>
+        
+          <li class="footer-nav-item">
+            <a href="#" class="footer-nav-link">Sitemap</a>
+          </li>
+        
+        </ul>
+
+        <ul class="footer-nav-list">
+        
+          <li class="footer-nav-item">
+            <h2 class="nav-title">Our Company</h2>
+          </li>
+        
+          <li class="footer-nav-item">
+            <a href="#" class="footer-nav-link">Delivery</a>
+          </li>
+        
+          <li class="footer-nav-item">
+            <a href="#" class="footer-nav-link">Legal Notice</a>
+          </li>
+        
+          <li class="footer-nav-item">
+            <a href="#" class="footer-nav-link">Terms and conditions</a>
+          </li>
+        
+          <li class="footer-nav-item">
+            <a href="#" class="footer-nav-link">About us</a>
+          </li>
+        
+          <li class="footer-nav-item">
+            <a href="#" class="footer-nav-link">Secure payment</a>
+          </li>
+        
+        </ul>
+
+        <ul class="footer-nav-list">
+        
+          <li class="footer-nav-item">
+            <h2 class="nav-title">Services</h2>
+          </li>
+        
+          <li class="footer-nav-item">
+            <a href="#" class="footer-nav-link">Prices drop</a>
+          </li>
+        
+          <li class="footer-nav-item">
+            <a href="#" class="footer-nav-link">New products</a>
+          </li>
+        
+          <li class="footer-nav-item">
+            <a href="#" class="footer-nav-link">Best sales</a>
+          </li>
+        
+          <li class="footer-nav-item">
+            <a href="#" class="footer-nav-link">Contact us</a>
+          </li>
+        
+          <li class="footer-nav-item">
+            <a href="#" class="footer-nav-link">Sitemap</a>
+          </li>
+        
+        </ul>
+
+        <ul class="footer-nav-list">
+
+          <li class="footer-nav-item">
+            <h2 class="nav-title">Contact</h2>
+          </li>
+
+          <li class="footer-nav-item flex">
+            <div class="icon-box">
+              <ion-icon name="location-outline"></ion-icon>
+            </div>
+
+            <address class="content">
+              No 297 Barathi cross street Ponneri Tamil-Nadu India.
+            </address>
+          </li>
+
+          <li class="footer-nav-item flex">
+            <div class="icon-box">
+              <ion-icon name="call-outline"></ion-icon>
+            </div>
+
+            <a href="tel:+607936-8058" class="footer-nav-link">7904136090</a>
+          </li>
+
+          <li class="footer-nav-item flex">
+            <div class="icon-box">
+              <ion-icon name="mail-outline"></ion-icon>
+            </div>
+
+            <a href="mailto:example@gmail.com" class="footer-nav-link">example@gmail.com</a>
+          </li>
+
+        </ul>
+
+      </div>
+
+    </div>
+
+    
+    <div class="footer-bottom">
+
+      <div class="container">
+
+        
+        <img src="{% static '/assets/images/payment.png' %}" alt="payment method" class="payment-img">
+
+        <p class="copyright">
+          Copyright &copy; <a href="#">Grocery-Shop</a> all rights reserved.
+        </p>
+
+      </div>
+
+    </div>
+
+  </footer>
+
+
+  <!--
+    - custom js link
+  -->
+  <script>
+    object = {0:0,1:0,2:0,3:0,4:0,5:0,6:0,7:0,8:0}
+    get = document.getElementsByClassName('sidebar-menu-category')
+    function sidebar(This,val){
+      get_ul = This.getElementsByClassName("displayblock")[0]
+      if (object[val]==0){
+              get_ul.style.display = "block"
+              object[val] = 1
+      }
+      else{
+        get_ul.style.display = "none"
+              object[val] = 0
+            }
+            console.log(get_ul)
+            console.log(object)
+      }
+
+        function dis(){
+          console.log(true)
+        }
+  </script>
+  {% endblock %}
+
+  <script src="{% static '/assets/js/script.js' %}"></script>
+  <!--
+    - ionicon link
+  -->
+  <script type="module" src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.esm.js"></script>
+  <script nomodule src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.js"></script>
+
+</body>
+</html>

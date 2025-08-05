@@ -1,0 +1,30 @@
+{% extends 'login.html' %}
+{% load static %}
+{% load crispy_forms_tags %}
+
+
+{% block content %}
+    <div class="container mt-5">
+        <h4>
+            Welcome to Add Products Page.Only admin can add the items!.
+        </h4>
+        <form action="" method="post" enctype="multipart/form-data">
+            {% csrf_token %}
+            <div class="pt-5 row">
+                <div class="col">
+                    {{form.product_name|as_crispy_field}}
+                    {{form.product_company|as_crispy_field}}
+                    {{form.quantity|as_crispy_field}}
+                    {{form.product_details|as_crispy_field}}
+                </div>
+                <div class="col">
+                    {{form.price|as_crispy_field}}
+                    {{form.type|as_crispy_field}}
+                    {{form.image|as_crispy_field}}
+                </div>
+            </div>
+            <input type="submit" value="Add product" name="submitbtn" class="banner-btn" style="border: none;">
+        </form>
+    </div>
+{% endblock %}    
+

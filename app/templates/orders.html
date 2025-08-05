@@ -1,0 +1,43 @@
+{% extends 'index.html' %}
+
+
+
+{% block content %}
+<div class="container" style="margin-top: 30px;">
+    <div class="product-minimal">
+        <div class="product-showcase">
+            <h2 class="title" style="padding:20px 10px;">My Orders</h2>
+            <div class="showcase-wrapper has-scrollbar">
+                <div class="showcase-container">
+                    {% for i in user %}
+
+
+                    <div class="showcase" style="padding: 20px 10px;">
+
+                        <a href="#" class="showcase-img-box">
+                        <img src="{{i.product.image.url}}" alt="" width="70" class="showcase-img">
+                        </a>
+
+                        <div class="showcase-content">
+
+                            <a href="#">
+                                <h4 class="showcase-title" style="white-space: wrap;">{{i.product.product_details}}</h4>
+                            </a>
+
+                            <a href="#" class="showcase-category">{{i.product.product_name}}</a>
+
+                            <div class="price-box">
+                                <p class="price">₹{{i.product.price}}</p>
+                                <del>₹850</del>
+                            </div>
+                        </div>
+
+                    </div>
+
+                    {% endfor %}
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

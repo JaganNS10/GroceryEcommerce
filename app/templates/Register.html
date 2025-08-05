@@ -1,0 +1,67 @@
+{% load static %}
+{% load crispy_forms_tags %}
+{% block css %}
+<title>Grocery -eCommerce Website</title>
+<link rel="shortcut icon" href="{% static 'assets/images/logo/favicon.ico' %}" type="image/x-icon">
+<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+<style>
+    .banner-btn{
+        background-color:black;
+        padding:10px 40px;
+        border-radius:8px;
+        color:white;
+        font-size:large;
+        font-weight:bold;
+        text-transform: capitalize;
+        text-decoration:none;
+    }
+    .banner-btn:hover{
+        background-color:darkgray;
+        transition: ease 0.8s all;
+        color: black;
+    }
+</style>
+{% endblock %}
+
+{% block content %}
+    
+    <div class="container mt-4">
+         {% if messages %}
+            {% for i in messages %}
+            <span style="font-size:large;font-weight: bold;color:crimson;">
+                {{i}}
+            </span>
+            {% endfor %}
+        {% endif %}
+        
+        <h4>
+            Welcome to Grocery Shop's Register Page. Please Register here :)
+        </h4>
+        <h6>
+            Note! Remember your password and username!
+        </h6>
+    <form action="" method="post">
+        {% csrf_token %}
+        <div class="pt-2 row">
+            <div class="col">
+                {{form.username|as_crispy_field}}
+                {{form.first_name|as_crispy_field}}
+                {{form.last_name|as_crispy_field}}
+                {{form.address|as_crispy_field}}
+            </div>
+            <div class="col">
+                {{form.email|as_crispy_field}}
+                {{form.phone|as_crispy_field}}
+                {{form.password1|as_crispy_field}}
+                {{form.password2|as_crispy_field}}
+            </div>
+        </div>
+        <div>
+            <input type="submit" value="Register" name="registerbtn" class="banner-btn" style="border:none;">
+            <a href="{% url 'Home' %}" class="banner-btn" style="text-decoration:none;">
+                Back to Home Page
+            </a>
+        </div>
+    </form>
+    </div>
+{% endblock %}

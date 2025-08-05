@@ -1,0 +1,37 @@
+{% extends 'login.html' %}
+{% load crispy_forms_tags %}
+
+
+
+{% block content %}
+
+{% if messages %}
+    {% for i in messages %}
+      <span style="font-size:large;font-weight: bold;color:crimson;">
+        {{i}}
+      </span>
+    {% endfor %}
+{% endif %}
+
+
+<div class="container mt-5">
+    <div>
+        <h5>
+            Change Your Personal Details here.
+        </h5>
+        <small>
+            Note! Provide the details correctly.
+        </small>
+    </div>
+    <form action="" method="post">
+        {% csrf_token %}
+        <div class="pt-5">
+            {{form|crispy}}
+            <input type="submit" name="Editbtn" value="Edit" class="banner-btn">
+            <a href="{% url 'payment' %}">
+                <input type="button" name="" value="Back to Payment" class="banner-btn">
+            </a>
+        </div>
+    </form>
+</div>
+{% endblock %}

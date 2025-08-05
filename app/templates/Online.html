@@ -1,0 +1,43 @@
+{% extends 'index.html' %}
+{% load static %}
+
+{% block css %}
+<style>
+    h5{
+        padding:5px;
+    }
+    .OnlinePayment{
+    display:flex;
+    align-items:center;
+    justify-content:space-evenly;
+    padding-top:15px;
+    }
+</style>
+{% endblock %}
+{% block content %}
+<div class="container">
+    <div>
+        <h4>Note! Follow the steps for Online Payment</h4>
+        <h5>Step 1: Download the QR Code By Clicking the button Download QR</h5>
+        <h5>Step 2: Pay the total amount by scan this QR.</h5>
+        <h5>Step 3: Upload the Completed recipt.</h5>
+    </div>
+    <div class="OnlinePayment">
+        <div>
+            <form action="" method="post" enctype="multipart/form-data">
+                {% csrf_token %}
+                {{form}}
+
+                <input type="submit" value="Upload Recipt" name="recipt" class="banner-btn" style="border:none;margin-top:10px;">
+            </form>
+        </div>
+        <div>
+            <img src="{% static 'assets/images/QR.jpeg'%}" alt="" width="30%">
+
+            <a href="{% static 'assets/images/QR.jpeg'%}" class="banner-btn" download>
+                Download QR
+            </a>
+        </div>
+    </div>
+</div>
+{% endblock %}

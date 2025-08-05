@@ -1,0 +1,89 @@
+{% extends 'index.html' %}
+{% load crispy_forms_tags %}
+{% load static %}
+
+
+{% block css %}
+<style>
+.price h4{
+    padding: 8px 0;
+}
+.price1 h4{
+    padding: 9px 0;
+}
+h3{
+    padding:5px 0;
+}
+</style>
+{% endblock %}
+
+{% block content %}
+ <div class="container" style="margin-top: 30px;">
+    <div class="product-minimal">
+
+        <div class="product-showcase">
+            <h2 class="title" style="padding:20px 10px;">User Details</h2>
+            <div class="showcase-wrapper has-scrollbar">
+                <div class="showcase-container">
+                    <div class="showcase" style="padding: 20px 10px;display:block;">
+                        <h3 class="showcase-title">
+                            Name: {{user.first_name}} {{user.last_name}}
+                        </h3>
+                        <h3 class="showcase-title">
+                            Address: {{user.address}}
+                        </h3>
+                        <h3 class="showcase-title">
+                            Email: {{user.email}}
+                        </h3>
+                        <h3 class="showcase-title">
+                            Phone: {{user.phone}}
+                        </h3>
+                        <a href="{% url 'editprofile' user.id %}" class="banner-btn" style="background-color:#2874f0;border-color:#2874f0;margin-top:10px;">
+                            Edit
+                        </a>
+                    </div>
+                    <div style="display:flex;justify-content:space-around;">
+                        <a class="banner-btn" href="/rooturl/confirm_cash/">
+                            Cash on Delivery
+                        </a>
+                        <a class="banner-btn" href="{% url 'Online'%}">
+                            Online Payment
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="product-showcase" >
+            <h2 class="title" style="padding:20px 10px;">Price Details</h2>
+            <div class="showcase-wrapper  has-scrollbar">
+                <div class="showcase-container">
+                    <div class="showcase" style="padding: 20px 10px;">
+                        <div class="showcase-content price">
+                            <h4 class="showcase-title">Price ({{count}} items)</h4>
+                            <h4 class="showcase-title">Platform Fee</h4>
+                            <h4 class="showcase-title">Handling Fee</h4>
+                        </div>
+                        <div class="showcase-content price1">
+                            <h4 class="showcase-title">{{price}}</h4>
+
+                            <h4 class="showcase-title">₹9</h4>
+
+                            <h4 class="showcase-title">₹39</h4>
+                        </div>
+                    </div>
+                    <div class="showcase" style="padding: 20px 10px;">
+                        <div class="showcase-content">
+                            <h4 class="showcase-title">Total Amount</h4>
+                        </div>
+                        <div class="showcase-content" >
+                            <h4 class="showcase-title">{{total}}</h4>
+                            
+                        </div>
+                    </div>
+                </div>
+            </div> 
+        </div>
+    </div>
+</div>
+{% endblock %}

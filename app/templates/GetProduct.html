@@ -1,0 +1,260 @@
+{% extends 'index.html' %}
+{% load static %}
+
+{% block content %}
+<div class="product-container">
+    <div class="container">
+
+        <div class="sidebar  has-scrollbar" data-mobile-menu>
+          <div class="sidebar-category">
+            <h3>Brands</h3>
+            {% for i in product_name %}
+                <button type="submit" style="font-size:medium;font-weight:bold;">
+                  {{i}}
+                </button>
+            {% endfor %}
+
+            <h3>Type</h3>
+            {% for i in Type %}
+                <button type="submit" style="font-size:medium;font-weight:bold;">
+                  {{i}}
+                </button>
+            {% endfor %}
+          </div>
+        </div>
+        <div class="product-box">
+            <div class="product-main">
+
+                <div class="product-grid">
+                    {% for i in data %}
+                    <div class="showcase">
+
+                        <div class="showcase-banner">
+
+                            <img src="{{i.image.url}}" alt=""  class="product-img default"  width="120" height="200">
+
+                            <div class="showcase-actions">
+
+                                <a href="/rooturl/addCart/{{i.id}}" class="btn-action">
+                                <ion-icon name="heart-outline"></ion-icon>
+                                </a>
+
+                                <a href="{% url 'ViewProduct' i.id %}" class="btn-action">
+                                <ion-icon name="eye-outline"></ion-icon>
+                                </a>
+
+                                <a class="btn-action">
+                                <ion-icon name="repeat-outline"></ion-icon>
+                                </a>
+
+                                <a class="btn-action">
+                                <ion-icon name="bag-add-outline"></ion-icon>
+                                </a>
+
+                            </div>
+
+                            <div class="showcase-content">
+
+                                <a href="#" class="showcase-category">{{i.product_name}}</a>
+            
+
+                                <a href="#">
+                                    <h3 class="showcase-title" style="white-space:wrap;">{{i.product_details}}</h3>
+                                </a>
+
+                                <div class="price-box">
+                                    <p class="price">{{i.quantity}}</p>
+                                    <p class="price">₹{{i.price}}</p>
+                                
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    {% endfor %}
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+{% endblock %}
+
+
+
+<!-- <div class="product-featured">
+
+            <h2 class="title">Deal of the day</h2>
+
+            <div class="showcase-wrapper has-scrollbar">
+
+              <div class="showcase-container">
+
+                <div class="showcase">
+                  
+                  <div class="showcase-banner">
+                    <img src="{% static '/assets/images/products/shampoo.jpg' %}" alt="shampoo, conditioner & facewash packs" class="showcase-img">
+                  </div>
+
+                  <div class="showcase-content">
+                    
+                    <div class="showcase-rating">
+                      <ion-icon name="star"></ion-icon>
+                      <ion-icon name="star"></ion-icon>
+                      <ion-icon name="star"></ion-icon>
+                      <ion-icon name="star-outline"></ion-icon>
+                      <ion-icon name="star-outline"></ion-icon>
+                    </div>
+
+                    <a href="#">
+                      <h3 class="showcase-title">shampoo, conditioner & facewash packs</h3>
+                    </a>
+
+                    <p class="showcase-desc">
+                      Lorem ipsum dolor sit amet consectetur Lorem ipsum
+                      dolor dolor sit amet consectetur Lorem ipsum dolor
+                    </p>
+
+                    <div class="price-box">
+                      <p class="price">₹150.00</p>
+
+                      <del>₹200.00</del>
+                    </div>
+
+                    <button class="add-cart-btn">add to cart</button>
+
+                    <div class="showcase-status">
+                      <div class="wrapper">
+                        <p>
+                          already sold: <b>20</b>
+                        </p>
+
+                        <p>
+                          available: <b>40</b>
+                        </p>
+                      </div>
+
+                      <div class="showcase-status-bar"></div>
+                    </div>
+
+                    <div class="countdown-box">
+
+                      <p class="countdown-desc">
+                        Hurry Up! Offer ends in:
+                      </p>
+
+                      <div class="countdown">
+
+                        <div class="countdown-content">
+
+                          <p class="display-number">360</p>
+
+                          <p class="display-text">Days</p>
+
+                        </div>
+
+                        <div class="countdown-content">
+                          <p class="display-number">24</p>
+                          <p class="display-text">Hours</p>
+                        </div>
+
+                        <div class="countdown-content">
+                          <p class="display-number">59</p>
+                          <p class="display-text">Min</p>
+                        </div>
+
+                        <div class="countdown-content">
+                          <p class="display-number">00</p>
+                          <p class="display-text">Sec</p>
+                        </div>
+
+                      </div>
+
+                    </div>
+
+                  </div>
+
+                </div>
+
+              </div>
+
+              <div class="showcase-container">
+              
+                <div class="showcase">
+              
+                  <div class="showcase-banner">
+                    <img src="{% static '/assets/images/products/28.png' %}" alt="" class="showcase-img">
+                  </div>
+              
+                  <div class="showcase-content">
+              
+                    <div class="showcase-rating">
+                      <ion-icon name="star"></ion-icon>
+                      <ion-icon name="star"></ion-icon>
+                      <ion-icon name="star"></ion-icon>
+                      <ion-icon name="star-outline"></ion-icon>
+                      <ion-icon name="star-outline"></ion-icon>
+                    </div>
+              
+                    <h3 class="showcase-title">
+                      <a href="#" class="showcase-title">Jivo Pomace Cooking Edible Olive Oil</a>
+                    </h3>
+              
+                    <p class="showcase-desc">
+                      Lorem ipsum dolor sit amet consectetur Lorem ipsum
+                      dolor dolor sit amet consectetur Lorem ipsum dolor
+                    </p>
+              
+                    <div class="price-box">
+                      <p class="price">₹550.00</p>
+                      <del>$600.00</del>
+                    </div>
+              
+                    <button class="add-cart-btn">add to cart</button>
+              
+                    <div class="showcase-status">
+                      <div class="wrapper">
+                        <p> already sold: <b>15</b> </p>
+              
+                        <p> available: <b>40</b> </p>
+                      </div>
+              
+                      <div class="showcase-status-bar"></div>
+                    </div>
+              
+                    <div class="countdown-box">
+              
+                      <p class="countdown-desc">Hurry Up! Offer ends in:</p>
+              
+                      <div class="countdown">
+                        <div class="countdown-content">
+                          <p class="display-number">360</p>
+                          <p class="display-text">Days</p>
+                        </div>
+              
+                        <div class="countdown-content">
+                          <p class="display-number">24</p>
+                          <p class="display-text">Hours</p>
+                        </div>
+              
+                        <div class="countdown-content">
+                          <p class="display-number">59</p>
+                          <p class="display-text">Min</p>
+                        </div>
+              
+                        <div class="countdown-content">
+                          <p class="display-number">00</p>
+                          <p class="display-text">Sec</p>
+                        </div>
+                      </div>
+              
+                    </div>
+              
+                  </div>
+              
+                </div>
+              
+              </div>
+
+            </div>
+
+</div> -->
