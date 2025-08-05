@@ -337,13 +337,18 @@ def password(request):
 
 
 
+
+
 def extract_text_from_image(image_file):
-    api_key = 'K83656049788957'  # 🔁 Replace this with your real OCR.Space API key
+    api_key = 'K83656049788957'  # ✅ Use your real API key
     url = 'https://api.ocr.space/parse/image'
+
+    # Reset file pointer to the beginning
+    image_file.seek(0)
 
     response = requests.post(
         url,
-        files={'filename': image_file},
+        files={'filename': (image_file.name, image_file.read())},
         data={'apikey': api_key, 'language': 'eng'}
     )
 
@@ -352,6 +357,7 @@ def extract_text_from_image(image_file):
         return result_json["ParsedResults"][0]["ParsedText"]
     except (KeyError, IndexError):
         return ""
+
     
 def Online_Payment(request):
     try:
