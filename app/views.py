@@ -334,10 +334,11 @@ def Online_Payment(request):
 
 def Price(Cart):
     price = [1]
-    for i in Cart:
-        price_items = i.product.price
-        amount = i.cart
-        price[0] = price[0]+(price_items*amount)
+    if Cart:
+        for i in Cart:
+            price_items = i.product.price
+            amount = i.cart
+            price[0] = price[0]+(price_items*amount)
     price[0] = price[0]-1
     total = price[0]+9+39
     return [price,total]
