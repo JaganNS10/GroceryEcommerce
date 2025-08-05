@@ -17,6 +17,7 @@ from PIL import Image
 import datetime
 from django.db.models import Q
 import os
+import requests
 
 
 
@@ -335,6 +336,23 @@ def password(request):
 #     return render(request,'Online.html',{"form":form,"count":List[0],"name":"Profile","link":link,"Name":"Orders","logo":"briefcase-outline"}) 
 
 
+
+def extract_text_from_image(image_file):
+    api_key = 'K83656049788957'  # 🔁 Replace this with your real OCR.Space API key
+    url = 'https://api.ocr.space/parse/image'
+
+    response = requests.post(
+        url,
+        files={'filename': image_file},
+        data={'apikey': api_key, 'language': 'eng'}
+    )
+
+    try:
+        result_json = response.json()
+        return result_json["ParsedResults"][0]["ParsedText"]
+    except (KeyError, IndexError):
+        return ""
+    
 def Online_Payment(request):
     try:
         GetCart = CartDetails(request)
@@ -360,8 +378,7 @@ def Online_Payment(request):
                 save_image = PaymentImage.objects.create(image=data)
 
                 try:
-                    open_image = Image.open(data)  # directly use uploaded image
-                    change_image_text = pytesseract.image_to_string(open_image)
+                    extracted_text = extract_text_from_image(data)
                 except Exception as e:
                     print("OCR error:", e)
                     save_image.delete()
@@ -369,12 +386,12 @@ def Online_Payment(request):
                     return redirect(request.path)
 
                 if (
-                    "Completed" in change_image_text and
-                    str(int(total)) in change_image_text and
-                    day in change_image_text and
-                    monthmap in change_image_text and
-                    year in change_image_text and
-                    "To: JOTHILAKSHMI S" in change_image_text
+                    "Completed" in extracted_text and
+                    str(int(total)) in extracted_text and
+                    day in extracted_text and
+                    monthmap in extracted_text  and
+                    year in extracted_text and
+                    "To: JOTHILAKSHMI S" in extracted_text 
                 ):
                     request.session['payment'] = 'Online Payment'
                     return redirect('Cash')
