@@ -19,6 +19,7 @@ class Products(models.Model):
     product_details = models.TextField()
     type = models.CharField(default="Enter the type like pouch,can,jar...")
     image = models.ImageField(upload_to='ProductImages/')
+    url = models.URLField()
     created = models.DateTimeField(auto_now_add=True)
 
     

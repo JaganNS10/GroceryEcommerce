@@ -63,7 +63,9 @@ def AddProductView(request):
             Save = form.save(commit=False)
             Save.image = secure_url
             Save.save()
-
+            last = Products.objects.last()
+            last.url = secure_url
+            last.save()
             messages.success(request,f"product saved {data.get('product_details')}")
             # return redirect('Home')
         else:
