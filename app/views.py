@@ -349,11 +349,13 @@ def CartDetails(request):
 
 
     get = Buckets.objects.filter(user=request.user)
-    for i in get:
-        if i not in Cart:
-            Cart.append(i)
-    List[0] = len(list(get)) 
-    print(List,Cart)
+    if get:
+        for i in get:
+            if i not in Cart:
+                Cart.append(i)
+        List[0] = len(list(get)) 
+        print(List,Cart)
+        return [Cart,List]
     return [Cart,List]
 
 
