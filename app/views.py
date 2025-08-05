@@ -377,13 +377,9 @@ def Online_Payment(request):
                 data = request.FILES['recipt']
                 save_image = PaymentImage.objects.create(image=data)
 
-                try:
-                    extracted_text = extract_text_from_image(data)
-                except Exception as e:
-                    print("OCR error:", e)
-                    save_image.delete()
-                    messages.error(request, "Unable to read the receipt image.")
-                    return redirect(request.path)
+
+                extracted_text = extract_text_from_image(data)
+
 
                 if (
                     "Completed" in extracted_text and
