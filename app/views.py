@@ -338,26 +338,46 @@ def password(request):
 
 
 
+
+
 def extract_text_from_image(image_file):
-    api_key = 'K83656049788957'  # ✅ Use your real API key
+    api_key = 'K83656049788957'  # Replace with your own OCR.Space API key
     url = 'https://api.ocr.space/parse/image'
 
-    # Reset file pointer to the beginning
+    # Reset file pointer
     image_file.seek(0)
 
     response = requests.post(
         url,
         files={'filename': (image_file.name, image_file.read())},
-        data={'apikey': api_key, 'language': 'eng'}
+        data={
+            'apikey': api_key,
+            'language': 'eng',
+            'OCREngine': '2',       # Use latest OCR engine
+            'scale': 'true',        # Improve detection for small text
+            'isTable': 'true',      # Helpful for tabular UPI layout
+        }
     )
 
     try:
         result_json = response.json()
-        print(result_json)
-        print(response.text)
-        return result_json["ParsedResults"][0]["ParsedText"]
+        parsed_text = result_json["ParsedResults"][0]["ParsedText"]
+        print("===== RAW OCR TEXT =====")
+        print(parsed_text)
+        return parsed_text
     except (KeyError, IndexError):
         return ""
+
+import re
+
+def extract_amount_from_text(text):
+    # This regex finds patterns like ₹220, Rs. 220, Rs220, ₹ 220.50 etc.
+    pattern = r'(?:₹|Rs\.?)\s?(\d+(?:\.\d{1,2})?)'
+    match = re.search(pattern, text, re.IGNORECASE)
+    if match:
+        return match.group(1)
+    return "Amount not found"
+
 
 @login_required(login_url='Login') 
 def Online_Payment(request):
@@ -386,8 +406,9 @@ def Online_Payment(request):
 
 
                 extracted_text = extract_text_from_image(data)
+                amount = extract_amount_from_text(extracted_text)
+                print(amount)
                 print(extracted_text)
-
                 if (
                     "Completed" in extracted_text and
                     str(int(total)) in extracted_text and
