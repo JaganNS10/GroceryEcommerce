@@ -54,7 +54,7 @@ def AddProductView(request):
             cloudinary.config( 
                 cloud_name = "dyzbqhn4x", 
                 api_key = "138459462238155", 
-                api_secret = "bF9HoKDJSKHjRIVl8bCrq2vLGLM", # Click 'View API Keys' above to copy your API secret
+                api_secret = os.getenv("CLOUDINARY_API_SECRET"), # Click 'View API Keys' above to copy your API secret
                 secure=True
             )
             image_file = request.FILES.get('image')
