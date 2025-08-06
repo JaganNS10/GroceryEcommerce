@@ -39,49 +39,46 @@ def Home(request):
         link = '/rooturl/Register/'
         return render(request,"index.html",{"count":0,"name":"Register","link":link,"Name":"Login","logo":"person-add-outline","Link":"/rooturl/Login"})
 
-#@login_required(login_url='Home')
-
-
-# Upload image to Cloudinary
-
-
-# Save to Django model
+@login_required(login_url='Home')
 def AddProductView(request):
-    if request.method == "POST":
-        form = AddProducts(request.POST,files=request.FILES)
-        if form.is_valid():
-            data = form.cleaned_data
-            cloudinary.config( 
-                cloud_name = "dyzbqhn4x", 
-                api_key = "138459462238155", 
-                api_secret = os.getenv("CLOUDINARY_API_SECRET"), # Click 'View API Keys' above to copy your API secret
-                secure=True
-            )
-            image_file = request.FILES.get('image')
-            upload_result = cloudinary.uploader.upload(image_file)
-            secure_url = upload_result['secure_url']
-            Save = form.save(commit=False)
-            Save.image = secure_url
-            Save.save()
-            last = Products.objects.last()
-            last.url = secure_url
-            last.save()
-            messages.success(request,f"product saved {data.get('product_details')}")
-            # return redirect('Home')
+    if request.user.username == "karthik":
+        if request.method == "POST":
+            form = AddProducts(request.POST,files=request.FILES)
+            if form.is_valid():
+                data = form.cleaned_data
+                cloudinary.config( 
+                    cloud_name = "dyzbqhn4x", 
+                    api_key = "138459462238155", 
+                    api_secret = os.getenv("CLOUDINARY_API_SECRET"), # Click 'View API Keys' above to copy your API secret
+                    secure=True
+                )
+                image_file = request.FILES.get('image')
+                upload_result = cloudinary.uploader.upload(image_file)
+                secure_url = upload_result['secure_url']
+                Save = form.save(commit=False)
+                Save.image = secure_url
+                Save.save()
+                last = Products.objects.last()
+                last.url = secure_url
+                last.save()
+                messages.success(request,f"product saved {data.get('product_details')}")
+                # return redirect('Home')
+            else:
+                messages.error(request,form.errors)
         else:
-            messages.error(request,form.errors)
-    else:
-        form = AddProducts()
-    GetCart = CartDetails(request)
-    # List = GetCart[1]"count":List[0]
-    link = '/rooturl/profile/'
-  
-    return render(
-        request,
-        'AddProduct.html',
+            form = AddProducts()
+        GetCart = CartDetails(request)
+        # List = GetCart[1]"count":List[0]
+        link = '/rooturl/profile/'
+    
+        return render(
+            request,
+            'AddProduct.html',
 
-        {"form":form,"name":"profile","link":link,"Name":"Orders","logo":"briefcase-outline","Link":"/rooturl/orders/"}
-    )
+            {"form":form,"name":"profile","link":link,"Name":"Orders","logo":"briefcase-outline","Link":"/rooturl/orders/"}
+        )
+    else:
+        return redirect("Home")
 
 name = []
 @login_required(login_url='Login')
