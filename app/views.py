@@ -165,7 +165,11 @@ def GetProduct(request,value=None):
 @login_required(login_url='Login')
 def ViewProduct(request,pk):
     instance = Products.objects.get(id=pk)
-    del_price = instance.price+20
+    discount = instance.discount
+    if discount is not None:
+        del_price = instance.price/(1-discount/100)
+    else:
+        del_price = instance.price+20
     GetCart = CartDetails(request)
     Cart = GetCart[0]
     List = GetCart[1]
