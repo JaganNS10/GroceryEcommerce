@@ -25,7 +25,7 @@ class Products(models.Model):
 
     def save(self,*args,**kwargs):
         if self.discount:
-            self.price = self.price*(1-self.discount/100)
+            self.price = int(self.price*(1-self.discount/100))
         
         super().save(*args,**kwargs)
 

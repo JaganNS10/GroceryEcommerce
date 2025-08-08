@@ -3,7 +3,7 @@ from . import models
 
 
 class ProductAdmin(admin.ModelAdmin):
-    list_display = ["id","product_name","product_company","price","quantity"]
+    list_display = ["product_name","product_company","price","quantity"]
 
 class usermodelAdmin(admin.ModelAdmin):
     list_display = ["first_name","last_name","address","phone"]
