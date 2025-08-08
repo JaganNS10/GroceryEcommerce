@@ -43,7 +43,7 @@ def Home(request):
 def AddProductView(request):
     if request.user.username == "karthik":
         if request.method == "POST":
-            form = AddProducts(request.POST,files=request.FILES)
+            form = AddProducts(request.POST,request.FILES)
             if form.is_valid():
                 data = form.cleaned_data
                 cloudinary.config( 
@@ -52,6 +52,8 @@ def AddProductView(request):
                     api_secret = os.getenv("CLOUDINARY_API_SECRET"), # Click 'View API Keys' above to copy your API secret
                     secure=True
                 )
+                #discount
+
                 image_file = request.FILES.get('image')
                 upload_result = cloudinary.uploader.upload(image_file)
                 secure_url = upload_result['secure_url']
@@ -60,6 +62,12 @@ def AddProductView(request):
                 Save.save()
                 last = Products.objects.last()
                 last.url = secure_url
+
+                #discount
+                discount = last.discount
+                if discount is not None:
+                    last.price = last.price*(1-discount/100)
+                
                 last.save()
                 messages.success(request,f"product saved {data.get('product_details')}")
                 # return redirect('Home')
@@ -74,6 +82,56 @@ def AddProductView(request):
         return render(
             request,
             'AddProduct.html',
+
+            {"form":form,"name":"profile","link":link,"Name":"Orders","logo":"briefcase-outline","Link":"/rooturl/orders/"}
+        )
+    else:
+        return redirect("Home")
+    
+@login_required(login_url='Home')
+def UpdateProductView(request,pk):
+    if request.user.username == "karthik":
+        get = Products.objects.get(id=pk)
+        if request.method == "POST":
+            form = AddProducts(request.POST,request.FILES,instance=get)
+            if form.is_valid():
+                data = form.cleaned_data
+                cloudinary.config( 
+                    cloud_name = "dyzbqhn4x", 
+                    api_key = "138459462238155", 
+                    api_secret = os.getenv("CLOUDINARY_API_SECRET"), # Click 'View API Keys' above to copy your API secret
+                    secure=True
+                )
+                #discount
+
+                image_file = request.FILES.get('image')
+                upload_result = cloudinary.uploader.upload(image_file)
+                secure_url = upload_result['secure_url']
+                Save = form.save(commit=False)
+                Save.image = secure_url
+                Save.save()
+                last = Products.objects.last()
+                last.url = secure_url
+
+                #discount
+                discount = last.discount
+                if discount is not None:
+                    last.price = last.price*(1-discount/100)
+                
+                last.save()
+                messages.success(request,f"product saved {data.get('product_details')}")
+                # return redirect('Home')
+            else:
+                messages.error(request,form.errors)
+        else:
+            form = AddProducts(instance=get)
+        GetCart = CartDetails(request)
+        # List = GetCart[1]"count":List[0]
+        link = '/rooturl/profile/'
+    
+        return render(
+            request,
+            'UpdateProduct.html',
 
             {"form":form,"name":"profile","link":link,"Name":"Orders","logo":"briefcase-outline","Link":"/rooturl/orders/"}
         )
@@ -224,8 +282,8 @@ def Cash(request):
     otp = random.randrange(100000,900000)
     order_id = "ORID"+str(number)
 
-    subject = f"Regarding Grocery-Shop.Your OrderID: {order_id}"
-    message = f"Hi {request.user} from Grocery-Shop Ecommerce.\nYour Order {",".join(product)} has been Placed Succesfully.\nYour items price is {price[1]}. OTP {otp}\nYour Order delivered within the day.Continue Shopping:)"
+    subject = f"Regarding NammaKadai Shop.Your OrderID: {order_id}"
+    message = f"Hi {request.user.username} from NammaKadai.\nYour Order {",".join(product)} has been Placed Succesfully.\nYour items price is {price[1]}. OTP {otp}\nYour Order delivered within the day.Continue Shopping:)"
     send_mail(
             subject,
             message,
