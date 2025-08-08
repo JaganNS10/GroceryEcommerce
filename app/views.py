@@ -238,7 +238,7 @@ def Cash(request):
     account_sid = os.getenv("TWILIO_ACCOUNT_SID")
     auth_token = os.getenv("TWILIO_AUTH_TOKEN")
 
-    number_list = ["+91 7904136090"]
+    number_list = ["+91 7904136090","+91 8072401620"]
     client = Client(account_sid,auth_token)
     get = usermodel.objects.get(id=request.user.id)
     
