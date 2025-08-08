@@ -20,7 +20,7 @@ class Products(models.Model):
     type = models.CharField(help_text="Enter the type like pouch,can,jar...")
     image = models.ImageField(upload_to='ProductImages/',null=True)
     url = models.URLField()
-    discount = models.IntegerField(help_text="Add discount.Not mandantory",null=True)
+    discount = models.IntegerField(help_text="Add discount.Not mandantory.You Can leave this field.",null=True,blank=True)
     created = models.DateTimeField(auto_now_add=True)
 
 
