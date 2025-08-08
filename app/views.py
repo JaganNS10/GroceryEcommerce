@@ -298,11 +298,12 @@ def ChangePassword(request):
                 messages.error(request,'Enter Correct Otp....')
     else:
         otp = random.randint(100000,1000000)
+        get = usermodel.objects.get(id=request.user.id)
         send_mail(
-            f"Regarding Password Change for User {request.user} From Grocery-Shop",
+            f"Regarding Password Change for User {get.username} From NammaKadai",
             f"Your Otp is :{otp}",
             settings.EMAIL_HOST_USER,
-            [request.user.email]
+            [get.email]
         )
         request.session["otp"] = otp
         print(request.session['otp'])
