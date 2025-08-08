@@ -18,10 +18,17 @@ class Products(models.Model):
     quantity = models.CharField(help_text="Enter Quantity like 200ml,200g..")
     product_details = models.TextField()
     type = models.CharField(help_text="Enter the type like pouch,can,jar...")
-    image = models.ImageField(upload_to='ProductImages/',null=True)
+    image = models.ImageField(upload_to='ProductImages/',null=True,blank=True)
     url = models.URLField()
     discount = models.IntegerField(help_text="Add discount.Not mandantory.You Can leave this field.",null=True,blank=True)
     created = models.DateTimeField(auto_now_add=True)
+
+    def save(self,*args,**kwargs):
+        if self.discount:
+            self.price = self.price*(1-self.discount/100)
+        
+        super().save(*args,**kwargs)
+
 
 
     def __str__(self):
