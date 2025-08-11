@@ -29,7 +29,7 @@
                             <div class="price-box">
                                 <p class="price">₹{{i.product.price}}</p>
                             </div>
-                            {% if i.status == 1 %}
+                            {% if i.status == "1" %}
                                 <a href="#">
                                     Status: <h4 class="showcase-title" style="white-space: wrap;">PENDING</h4>
                                 </a>
@@ -40,7 +40,7 @@
                                         </button>
                                     </form>
                                 </div>
-                            {% elif i.status == 2 %}
+                            {% elif i.status == "2" %}
                                 <a href="#">
                                     Status: <h4 class="showcase-title" style="white-space: wrap;">SUCCESS</h4>
                                 </a>
