@@ -610,32 +610,36 @@ def delivery(request):
 
 @login_required(login_url='Login')
 def delivery_success(request,pk):
-    get_delivery_data = UserPurchase.objects.get(id=pk)
-    get_delivery_data.status = 2
-    get_delivery_data.save()
-    subject = f"Regarding Order from NammaKadai Shop."
+    try:
 
-    message = f"Hi {get_delivery_data.user.username} from NammaKadai.\nYour Order {get_delivery_data.product.product_details} - {get_delivery_data.cart} has been delivered successfully."
-    send_mail(
-            subject,
-            message,
-            settings.EMAIL_HOST_USER,
-            [get_delivery_data.user.email]
-    )
+        get_delivery_data = UserPurchase.objects.get(id=pk)
+        get_delivery_data.status = 2
+        get_delivery_data.save()
+        subject = f"Regarding Order from NammaKadai Shop."
 
-
-    #send message to admin
-    account_sid = os.getenv("TWILIO_ACCOUNT_SID")
-    auth_token = os.getenv("TWILIO_AUTH_TOKEN")
-
-    number_list = ["+91 7904136090","+91 8072401620"]
-    client = Client(account_sid,auth_token)
-    details = f"Name: {get_delivery_data.user.username} \n Phone No: {get_delivery_data.user.phone}\nAddress: {get_delivery_data.user.address}\nProducts: {get_delivery_data.product.product_details} - {get_delivery_data.cart}\n Price:{(get_delivery_data.product.price)+48} \nPayment: {request.session['payment']} has been delivered successfully."
-    for r in number_list:
-        msg = client.messages.create(
-            body= f"{details}",
-            from_= "+18152474413",
-            to=r
+        message = f"Hi {get_delivery_data.user.username} from NammaKadai.\nYour Order {get_delivery_data.product.product_details} - {get_delivery_data.cart} has been delivered successfully."
+        send_mail(
+                subject,
+                message,
+                settings.EMAIL_HOST_USER,
+                [get_delivery_data.user.email]
         )
-    messages.success(request,f'{get_delivery_data.user.username} order {get_delivery_data.product.product_details} delivered successfully')
-    return redirect('delivery')
+
+
+        #send message to admin
+        account_sid = os.getenv("TWILIO_ACCOUNT_SID")
+        auth_token = os.getenv("TWILIO_AUTH_TOKEN")
+
+        number_list = ["+91 7904136090","+91 8072401620"]
+        client = Client(account_sid,auth_token)
+        details = f"Name: {get_delivery_data.user.username} \n Phone No: {get_delivery_data.user.phone}\nAddress: {get_delivery_data.user.address}\nProducts: {get_delivery_data.product.product_details} - {get_delivery_data.cart}\n Price:{(get_delivery_data.product.price)+48} \nPayment: {request.session['payment']} has been delivered successfully."
+        for r in number_list:
+            msg = client.messages.create(
+                body= f"{details}",
+                from_= "+18152474413",
+                to=r
+            )
+        messages.success(request,f'{get_delivery_data.user.username} order {get_delivery_data.product.product_details} delivered successfully')
+        return redirect('delivery')
+    except Exception as e:
+        return e
