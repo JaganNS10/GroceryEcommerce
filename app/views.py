@@ -642,4 +642,5 @@ def delivery_success(request,pk):
         messages.success(request,f'{get_delivery_data.user.username} order {get_delivery_data.product.product_details} delivered successfully')
         return redirect('delivery')
     except Exception as e:
-        return e
+        messages.error(request,f"Error: {str(e)}")
+        return redirect("delivery")
