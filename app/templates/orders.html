@@ -29,16 +29,22 @@
                             <div class="price-box">
                                 <p class="price">₹{{i.product.price}}</p>
                             </div>
-                        </div>
-                        <a href="#">
-                            Status: <h4 class="showcase-title" style="white-space: wrap;">{{i.status}}</h4>
-                        </a>
-                        <div>
-                            <form action="/rooturl/ConfirmCancelOrder/{{i.id}}/" method="get">
-                                <button type="submit" class="banner-btn">
-                                    Cancel Order
-                                </button>
-                            </form>
+                            {% if i.status== 1 %}
+                                <a href="#">
+                                    Status: <h4 class="showcase-title" style="white-space: wrap;">PENDING</h4>
+                                </a>
+                                <div>
+                                    <form action="/rooturl/ConfirmCancelOrder/{{i.id}}/" method="get">
+                                        <button type="submit" class="banner-btn">
+                                            Cancel Order
+                                        </button>
+                                    </form>
+                                </div>
+                            {% elif i.status == 2 %}
+                                <a href="#">
+                                    Status: <h4 class="showcase-title" style="white-space: wrap;">SUCCESS</h4>
+                                </a>
+                            {% endif %}
                         </div>
                     </div>
 
