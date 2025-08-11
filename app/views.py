@@ -604,8 +604,7 @@ def delivery(request):
         get_delivery = UserPurchase.objects.filter(status='1')
         GetCart = CartDetails(request)
         List = GetCart[1]
-        user = usermodel.objects.get(id=request.user.id)
-        return render(request,'delivery.html',{'user':user,"count":List[0],"name":"profile","Name":"Orders","logo":"briefcase-outline","Link":"/rooturl/orders/","user":get_delivery})
+        return render(request,'delivery.html',{"count":List[0],"name":"profile","Name":"Orders","logo":"briefcase-outline","Link":"/rooturl/orders/","user":get_delivery})
 
     return redirect("Home")
 
