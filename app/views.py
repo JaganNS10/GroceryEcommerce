@@ -573,7 +573,7 @@ def CancelOrder(request,pk):
             subject,
             message,
             settings.EMAIL_HOST_USER,
-            [request.user.email]
+            [get_order.user.email]
     )
 
 
@@ -583,7 +583,6 @@ def CancelOrder(request,pk):
 
     number_list = ["+91 7904136090","+91 8072401620"]
     client = Client(account_sid,auth_token)
-    get = usermodel.objects.get(id=request.user.id)
     
     details = f"Name: {get_order.user.first_name} \n Phone No: {get_order.user.phone}\nAddress: {get_order.user.address}\nProducts: {get_order.product.product_details} - {get_order.cart}\n Price:{(get_order.product.price)+48} \nPayment: {request.session['payment']} has been cancellled order."
     for r in number_list:
@@ -615,7 +614,6 @@ def delivery_success(request,pk):
     get_delivery_data = UserPurchase.objects.get(id=pk)
     get_delivery_data.status = 2
     get_delivery_data.save()
-    get_order = UserPurchase.objects.get(id=pk)
     subject = f"Regarding Order from NammaKadai Shop."
 
     message = f"Hi {get_delivery_data.user.username} from NammaKadai.\nYour Order {get_delivery_data.product.product_details} - {get_delivery_data.cart} has been delivered successfully."
@@ -623,7 +621,7 @@ def delivery_success(request,pk):
             subject,
             message,
             settings.EMAIL_HOST_USER,
-            [request.user.email]
+            [get_delivery_data.user.email]
     )
 
 
@@ -633,7 +631,7 @@ def delivery_success(request,pk):
 
     number_list = ["+91 7904136090","+91 8072401620"]
     client = Client(account_sid,auth_token)
-    get = usermodel.objects.get(id=request.user.id)
+    
     
     details = f"Name: {get_delivery_data.user.first_name} \n Phone No: {get_delivery_data.user.phone}\nAddress: {get_delivery_data.user.address}\nProducts: {get_delivery_data.product.product_details} - {get_delivery_data.cart}\n Price:{(get_delivery_data.product.price)+48} \nPayment: {request.session['payment']} has been delivered successfully."
     for r in number_list:
