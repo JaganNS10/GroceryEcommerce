@@ -610,8 +610,6 @@ def delivery(request):
 
 @login_required(login_url='Login')
 def delivery_success(request,pk):
-    try:
-
         get_delivery_data = UserPurchase.objects.get(id=pk)
         get_delivery_data.status = 2
         get_delivery_data.save()
@@ -630,7 +628,7 @@ def delivery_success(request,pk):
         account_sid = os.getenv("TWILIO_ACCOUNT_SID")
         auth_token = os.getenv("TWILIO_AUTH_TOKEN")
 
-        number_list = ["+91 7904136090","+91 8072401620"]
+        number_list = ["+917904136090","+918072401620"]
         client = Client(account_sid,auth_token)
         details = f"Name: {get_delivery_data.user.username} \n Phone No: {get_delivery_data.user.phone}\nAddress: {get_delivery_data.user.address}\nProducts: {get_delivery_data.product.product_details} - {get_delivery_data.cart}\n Price:{(get_delivery_data.product.price)+48} \nPayment: {request.session['payment']} has been delivered successfully."
         for r in number_list:
@@ -641,6 +639,4 @@ def delivery_success(request,pk):
             )
         messages.success(request,f'{get_delivery_data.user.username} order {get_delivery_data.product.product_details} delivered successfully')
         return redirect('delivery')
-    except Exception as e:
-        messages.error(request,f"Error: {str(e)}")
-        return redirect("delivery")
+
