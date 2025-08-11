@@ -606,7 +606,7 @@ def delivery(request):
         return render(request,'delivery.html',{"user":get_delivery})
     return redirect("Home")
 
-
+@login_required(login_url='Login')
 def delivery_success(request,pk):
     get_delivery_data = UserPurchase.objects.get(id=pk)
     get_delivery_data.status = 2
