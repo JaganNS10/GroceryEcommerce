@@ -30,7 +30,13 @@
                                 <p class="price">₹{{i.product.price}}</p>
                             </div>
                         </div>
-
+                        <div>
+                            <form action="/rooturl/ConfirmCancelOrder/{{i.id}}/" method="get">
+                                <button type="submit" class="banner-btn">
+                                    Cancel Order
+                                </button>
+                            </form>
+                        </div>
                     </div>
 
                     {% endfor %}

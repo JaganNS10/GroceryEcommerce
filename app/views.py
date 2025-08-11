@@ -265,7 +265,7 @@ def Cash(request):
     
     #adduser purchase
     for j in GetCart[0]:
-        UserPurchase.objects.create(user=j.user,product=j.product)
+        UserPurchase.objects.create(user=j.user,product=j.product,cart=j.cart,status=1)
     
     #remove bucket
     for k in GetCart[0]:
@@ -557,6 +557,43 @@ def Logout(request):
     return redirect('Home')
 
 
+def ConfirmCancelOrder(request,pk):
+    GetCart = CartDetails(request)
+    List = GetCart[1]
+    link = '/rooturl/profile/'
+    return render(request,'cancelorder.html',{"count":List[0],"name":"Profile","link":link,"Name":"Orders","logo":"briefcase-outline","pk":pk})
 
 
+def CancelOrder(request,pk):
+    get_order = UserPurchase.objects.get(id=pk)
+    subject = f"Regarding Order Cancelling from NammaKadai Shop."
 
+    message = f"Hi {get_order.user.username} from NammaKadai.\nYour Order {get_order.product.product_details} - {get_order.cart} has been Cancelled."
+    send_mail(
+            subject,
+            message,
+            settings.EMAIL_HOST_USER,
+            [request.user.email]
+    )
+
+
+    #send message to admin
+    account_sid = os.getenv("TWILIO_ACCOUNT_SID")
+    auth_token = os.getenv("TWILIO_AUTH_TOKEN")
+
+    number_list = ["+91 7904136090","+91 8072401620"]
+    client = Client(account_sid,auth_token)
+    get = usermodel.objects.get(id=request.user.id)
+    
+    details = f"Name: {get_order.user.first_name} \n Phone No: {get_order.user.phone}\nAddress: {get_order.user.address}\nProducts: {get_order.product.product_details} - {get_order.cart} \nPayment: {request.session['payment']}"
+    for r in number_list:
+        msg = client.messages.create(
+            body= f"{details}",
+            from_= "+18152474413",
+            to=r
+        )
+    get_order.delete()
+
+    messages.success(request,'Your Order Has been Cancelled.Please check your email for further details')
+    return redirect("Home")
+    
