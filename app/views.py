@@ -630,9 +630,7 @@ def delivery_success(request,pk):
 
     number_list = ["+91 7904136090","+91 8072401620"]
     client = Client(account_sid,auth_token)
-    
-    
-    details = f"Name: {get_delivery_data.user.first_name} \n Phone No: {get_delivery_data.user.phone}\nAddress: {get_delivery_data.user.address}\nProducts: {get_delivery_data.product.product_details} - {get_delivery_data.cart}\n Price:{(get_delivery_data.product.price)+48} \nPayment: {request.session['payment']} has been delivered successfully."
+    details = f"Name: {get_delivery_data.user.username} \n Phone No: {get_delivery_data.user.phone}\nAddress: {get_delivery_data.user.address}\nProducts: {get_delivery_data.product.product_details} - {get_delivery_data.cart}\n Price:{(get_delivery_data.product.price)+48} \nPayment: {request.session['payment']} has been delivered successfully."
     for r in number_list:
         msg = client.messages.create(
             body= f"{details}",
