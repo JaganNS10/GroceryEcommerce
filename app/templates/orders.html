@@ -30,6 +30,9 @@
                                 <p class="price">₹{{i.product.price}}</p>
                             </div>
                         </div>
+                        <a href="#">
+                            Status: <h4 class="showcase-title" style="white-space: wrap;">{{i.status}}</h4>
+                        </a>
                         <div>
                             <form action="/rooturl/ConfirmCancelOrder/{{i.id}}/" method="get">
                                 <button type="submit" class="banner-btn">

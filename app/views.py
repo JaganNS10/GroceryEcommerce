@@ -255,7 +255,7 @@ def Cash(request):
     client = Client(account_sid,auth_token)
     get = usermodel.objects.get(id=request.user.id)
     
-    details = f"Name: {get.first_name} {get.last_login}\n Phone No: {get.phone}\nAddress: {get.address}\nOtp:  {otp}\nOrderId:  {order_id}\nProducts: {",".join(product)}\nPrice: {price[1]}\nPayment: {request.session['payment']}"
+    details = f"Name: {get.first_name} \n Phone No: {get.phone}\nAddress: {get.address}\nOtp:  {otp}\nOrderId:  {order_id}\nProducts: {",".join(product)}\nPrice: {price[1]}\nPayment: {request.session['payment']} has been placed."
     for r in number_list:
         msg = client.messages.create(
             body= f"{details}",
@@ -585,7 +585,7 @@ def CancelOrder(request,pk):
     client = Client(account_sid,auth_token)
     get = usermodel.objects.get(id=request.user.id)
     
-    details = f"Name: {get_order.user.first_name} \n Phone No: {get_order.user.phone}\nAddress: {get_order.user.address}\nProducts: {get_order.product.product_details} - {get_order.cart} \nPayment: {request.session['payment']}"
+    details = f"Name: {get_order.user.first_name} \n Phone No: {get_order.user.phone}\nAddress: {get_order.user.address}\nProducts: {get_order.product.product_details} - {get_order.cart}\n Price:{(get_order.product.price)+48} \nPayment: {request.session['payment']} has been cancellled order."
     for r in number_list:
         msg = client.messages.create(
             body= f"{details}",
