@@ -603,7 +603,11 @@ def CancelOrder(request,pk):
 def delivery(request):
     if request.user.username == "karthik":
         get_delivery = UserPurchase.objects.filter(status='1')
-        return render(request,'delivery.html',{"user":get_delivery})
+        GetCart = CartDetails(request)
+        List = GetCart[1]
+        user = usermodel.objects.get(id=request.user.id)
+        return render(request,'delivery.html',{'user':user,"count":List[0],"name":"profile","Name":"Orders","logo":"briefcase-outline","Link":"/rooturl/orders/","user":get_delivery})
+
     return redirect("Home")
 
 @login_required(login_url='Login')
@@ -638,5 +642,5 @@ def delivery_success(request,pk):
             from_= "+18152474413",
             to=r
         )
-
+    messages.success(request,f'{get_delivery_data.user.username} order {get_delivery_data.product.product_details} delivered successfully')
     return redirect('delivery')

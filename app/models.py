@@ -8,8 +8,7 @@ class usermodel(AbstractUser):
     phone = models.CharField(max_length=10, help_text='9756897634')
 
 
-    def __str__(self):
-        return f"{self.first_name}{self.last_name}  {self.address}  {self.phone}"
+   
 
 class Products(models.Model):
     product_name = models.CharField(help_text="Enter Product Name:")
@@ -29,10 +28,6 @@ class Products(models.Model):
         
         super().save(*args,**kwargs)
 
-
-
-    def __str__(self):
-        return f"{self.product_details} {self.price}"
 
     class Meta:
         models.UniqueConstraint(
