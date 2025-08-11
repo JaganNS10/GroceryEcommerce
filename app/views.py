@@ -556,14 +556,14 @@ def Logout(request):
     logout(request)
     return redirect('Home')
 
-
+@login_required(login_url='Login')
 def ConfirmCancelOrder(request,pk):
     GetCart = CartDetails(request)
     List = GetCart[1]
     link = '/rooturl/profile/'
     return render(request,'cancelorder.html',{"count":List[0],"name":"Profile","link":link,"Name":"Orders","logo":"briefcase-outline","pk":pk})
 
-
+@login_required(login_url='Login')
 def CancelOrder(request,pk):
     get_order = UserPurchase.objects.get(id=pk)
     subject = f"Regarding Order Cancelling from NammaKadai Shop."
@@ -597,3 +597,46 @@ def CancelOrder(request,pk):
     messages.success(request,'Your Order Has been Cancelled.Please check your email for further details')
     return redirect("Home")
     
+
+
+@login_required(login_url="Login")
+def delivery(request):
+    if request.user.username == "karthik":
+        get_delivery = UserPurchase.objects.filter(status='1')
+        return render(request,'delivery.html',{"user":get_delivery})
+    return redirect("Home")
+
+
+def delivery_success(request,pk):
+    get_delivery_data = UserPurchase.objects.get(id=pk)
+    get_delivery_data.status = 2
+    get_delivery_data.save()
+    get_order = UserPurchase.objects.get(id=pk)
+    subject = f"Regarding Order from NammaKadai Shop."
+
+    message = f"Hi {get_delivery_data.user.username} from NammaKadai.\nYour Order {get_delivery_data.product.product_details} - {get_delivery_data.cart} has been delivered successfully."
+    send_mail(
+            subject,
+            message,
+            settings.EMAIL_HOST_USER,
+            [request.user.email]
+    )
+
+
+    #send message to admin
+    account_sid = os.getenv("TWILIO_ACCOUNT_SID")
+    auth_token = os.getenv("TWILIO_AUTH_TOKEN")
+
+    number_list = ["+91 7904136090","+91 8072401620"]
+    client = Client(account_sid,auth_token)
+    get = usermodel.objects.get(id=request.user.id)
+    
+    details = f"Name: {get_delivery_data.user.first_name} \n Phone No: {get_delivery_data.user.phone}\nAddress: {get_delivery_data.user.address}\nProducts: {get_delivery_data.product.product_details} - {get_delivery_data.cart}\n Price:{(get_delivery_data.product.price)+48} \nPayment: {request.session['payment']} has been delivered successfully."
+    for r in number_list:
+        msg = client.messages.create(
+            body= f"{details}",
+            from_= "+18152474413",
+            to=r
+        )
+
+    return redirect('delivery')
